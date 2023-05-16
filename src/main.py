@@ -6,16 +6,19 @@
 """Doc string for modules"""
 import os
 from enum import Enum
+import asyncio
 from fastapi import FastAPI
-from pydantic import BaseModel
-from menu import Menu, MenuItem
+from pydantic import BaseModel, Field
+from menu import Menu
 from coffee_maker import CoffeeMaker
 from money_machine import MoneyMachine
-from typing import Union
-import asyncio
 
 
-#TODO Test for FastAPImissing-class-docstring
+coffee_maker = CoffeeMaker()
+money_machine = MoneyMachine()
+menu = Menu()
+
+#TODO Test for FastAPI
 
 class Unit(Enum):
     GRAMM ="g"
@@ -24,33 +27,44 @@ class Unit(Enum):
 class Euro(Enum):
     CURRENCY ="Euro"
 
-class Ingredient(BaseModel):
-    name: str
-    amount: int
-    unit: Unit
+class Ingredients(Enum):
+    water = "water"
+    milk = "milk"
+    coffee = "coffee"
+ 
 
-test = [
-    {"name": "test", "price": 7, "type": "maybe"},
-    {"name": "test", "price": 7, "type": "maybe"},
-    {"name": "test", "price": 7, "type": "maybe"},
-    {"name": "test", "price": 7, "type": "maybe"}
-]
+class IngredientAmount(BaseModel):
+    amount: int = Field(100, gt=0, lt=9999)
+    #unit: Unit
 
 app = FastAPI()
 
 
-@app.get("/test/")
-async def testit():
-    return test
+@app.get("/")
+async def read_root():
+    return {"Hello Coffee!"}
 
 
+@app.get("/menu/")
+async def get_menu():
+    return menu.get_items()
 
+
+@app.get("/coffee_maker/")
+async def get_report():
+    report = coffee_maker.resources
+    return report
+
+
+# TODO Types Ingredients & IngredientAmount 
+@app.put("/coffe_maker/")
+async def update_resources(item: str, amount: IngredientAmount):
+    coffee_maker.refill(item, amount)
+    report = coffee_maker.resources
+    return report
 
 ### 23 05 16 - old code below
 
-# coffee_maker = CoffeeMaker()
-# money_machine = MoneyMachine()
-# menu = Menu()
 # # Initialize
 # MACHINE_RUNNING = True
 # os.system('cls')
@@ -65,6 +79,7 @@ async def testit():
 #         coffee_maker.report()
 #         money_machine.report()
 #     elif choice == "refill":
+#        TODO Durch coffe_maker.refill ersetzen 
 #         refill_item = input("Which ingredient would you like to refill? (water, milk, coffee): ")
 #         refill_amount = int(input("How much would you like to refill? (ml/g): "))
 #         coffee_maker.resources[refill_item] += refill_amount
@@ -72,4 +87,3 @@ async def testit():
 #         drink = menu.find_drink(choice)
 #         if coffee_maker.is_resource_sufficient(drink) and money_machine.make_payment(drink.cost):
 #             coffee_maker.make_coffee(drink)
-        

@@ -28,3 +28,8 @@ class CoffeeMaker:
         for item in order.ingredients:
             self.resources[item] -= order.ingredients[item]
         print(f"Here is your {order.name} ☕️. Enjoy!")
+
+    def refill(self, item, amount):
+        """Takes item & amount as user input and adds to resources."""
+        plus = int(amount)
+        self.resources[item] += plus
