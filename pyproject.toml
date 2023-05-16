@@ -1,0 +1,12 @@
+[tool.pdm]
+
+[project]
+name = ""
+version = ""
+description = ""
+authors = [
+    {name = "Daniel Martin", email = "daniel.martin@scandio.de"},
+]
+dependencies = []
+requires-python = ">=3.10"
+license = {text = "MIT"}
