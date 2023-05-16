@@ -29,17 +29,19 @@ class Ingredient(BaseModel):
     amount: int
     unit: Unit
 
-test_items = [
-        {"name": "test", "price": 7},
-        {"also name": "test_2", "price": 9}
+test = [
+    {"name": "test", "price": 7, "type": "maybe"},
+    {"name": "test", "price": 7, "type": "maybe"},
+    {"name": "test", "price": 7, "type": "maybe"},
+    {"name": "test", "price": 7, "type": "maybe"}
 ]
 
 app = FastAPI()
 
 
-@app.get("/test_itmes/")
-async def get_menu() -> dict:
-    return test_items
+@app.get("/test/")
+async def testit():
+    return test
 
 
 
