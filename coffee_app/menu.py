@@ -1,3 +1,4 @@
+"""Functions for ingedirents and the menu"""
 class MenuItem:
     """Models each Menu Item."""
     def __init__(self, name, water, milk, coffee, cost):
@@ -27,7 +28,7 @@ class Menu:
         return options
 
     def find_drink(self, order_name):
-        """Searches the menu for a particular drink by name. Returns that item if it exists, otherwise returns None"""
+        """Searches menu for a drink by name. Returns that item if it exists, else returns None"""
         for item in self.menu:
             if item.name == order_name:
                 return item

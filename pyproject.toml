@@ -1,12 +1,18 @@
 [tool.pdm]
 
+[tool.pdm.scripts]
+start = "uvicorn main:app --reload"
+
 [project]
-name = ""
-version = ""
+name = "coffee_app"
+version = "0.0.1"
 description = ""
 authors = [
     {name = "Daniel Martin", email = "daniel.martin@scandio.de"},
 ]
-dependencies = []
+dependencies = [
+    "fastapi>=0.95.1",
+    "uvicorn[standard]>=0.22.0",
+]
 requires-python = ">=3.10"
 license = {text = "MIT"}
