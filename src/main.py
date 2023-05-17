@@ -56,12 +56,16 @@ async def get_report():
     return report
 
 
-# TODO Types Ingredients & IngredientAmount 
-@app.put("/coffe_maker/")
-async def update_resources(item: str, amount: IngredientAmount):
-    coffee_maker.refill(item, amount)
-    report = coffee_maker.resources
-    return report
+# TODO Types Ingredients & IngredientAmount
+# @app.put("/coffe_maker/{ingr_id}")
+# async def update_resources(ingr_id: Ingredients, amount: IngredientAmount):
+    # coffee_maker.refill(ingr_id, amount)
+    # report = coffee_maker.resources
+    # return report
+
+@app.put("/coffe_maker/{ingr_id}")
+async def update_resources(ingr_id: Ingredients, item):
+    coffee_maker.resources[ingr_id] = item
 
 ### 23 05 16 - old code below
 
