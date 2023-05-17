@@ -27,7 +27,7 @@ class Unit(Enum):
 class Euro(Enum):
     CURRENCY ="Euro"
 
-class Ingredients(Enum):
+class Ingredients(str, Enum):
     water = "water"
     milk = "milk"
     coffee = "coffee"
@@ -56,16 +56,20 @@ async def get_report():
     return report
 
 
-# TODO Types Ingredients & IngredientAmount
-# @app.put("/coffe_maker/{ingr_id}")
-# async def update_resources(ingr_id: Ingredients, amount: IngredientAmount):
-    # coffee_maker.refill(ingr_id, amount)
-    # report = coffee_maker.resources
-    # return report
-
+#TODO Types Ingredients & IngredientAmount
 @app.put("/coffe_maker/{ingr_id}")
-async def update_resources(ingr_id: Ingredients, item):
-    coffee_maker.resources[ingr_id] = item
+async def update_resources(ingr_id, ingredient: Ingredients, amount: IngredientAmount):
+    #coffee_maker.refill(ingr_id, amount)
+    #report = coffee_maker.resources
+    coffee_maker.resources[ingr_id] = ingredient
+    return coffee_maker.resources[ingr_id]
+
+
+
+
+# @app.put("/coffe_maker/{ingr_id}")
+# async def update_resources(ingr_id: Ingredients, item):
+#     coffee_maker.resources[ingr_id] = item
 
 ### 23 05 16 - old code below
 
