@@ -8,96 +8,84 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 </head>
 <body>
-    <h1 style="text-align:center">Hello Coffee!</h1>
+    <h1 style="text-align:center">Hello, Coffee!</h1>
 
     <div class="container text-center">
         <div class="row">
-        <form class="col">
-            <button>Report</button> 
-            <div>
-                <label for="input_ingredients">What to refill</label>
-                <input type="Text" id="input_ingredient">
-                <input type="number" id="input_amount">
-                <button type="submit">Refill</button>
-            </div>
-            <div>
-                <table>
-                    <tr>
-                        <th>Ingredient</th>
-                        <th>Amount</th>
-                        <th></th>
-                      </tr>
-                      <tr>
-                        <td>Coffee</td>
-                        <td>250</td>
-                        <td>g</td>
-                      </tr>
-                      <tr>
-                        <td>Water</td>
-                        <td>650</td>
-                        <td>ml</td>
-                      </tr>
-                      <tr>
-                        <td>Milk</td>
-                        <td>300</td>
-                        <td>ml</td>
-                      </tr>
-                </table>
-                <table>
-                    <tr>
-                        <th>Money</th>
-                        <th></th>
-                      </tr>
-                      <tr>
-                        <td>34.75</td>
-                        <td>Euro</td>
-                      </tr>
-                </table>
-            </div>
-        </form>
         <div class="col">
-            <img src="images/coffe_img.png" width = "300" height = "300">
-        </div>
-        <div class="col">
-            <table>
+            <div>
+              <table>
                 <tr>
                     <th>Product</th>
-                    <th>Price</th>
-                    <th></th>
+                    <th>Water [ml]</th>
+                    <th>Milk [ml]</th>
+                    <th>Coffee [g]</th>
+                    <th>Price [Euro]</th>
                   </tr>
                   <tr>
                     <td>Espresso</td>
+                    <td>50</td>
+                    <td>0</td>
+                    <td>18</td>
                     <td>1.50</td>
-                    <td>Euro</td>
-                    <td><button>Update</button></td>
+                    <td><button>EDIT</button></td>
+                    <td><button>DELETE</button></td>
                   </tr>
                   <tr>
                     <td>Americano</td>
+                    <td>125</td>
+                    <td>0</td>
+                    <td>36</td>
                     <td>2.25</td>
                     <td>Euro</td>
-                    <td><button>Update</button></td>
+                    <td><button>EDIT</button></td>
+                    <td><button>DELETE</button></td>
+                  </tr>
+                  <tr>
+                    <td>Latte</td>
+                    <td>200</td>
+                    <td>150</td>
+                    <td>24</td>
+                    <td>2.50</td>
+                    <td>Euro</td>
+                    <td><button>EDIT</button></td>
+                    <td><button>DELETE</button></td>
                   </tr>
                   <tr>
                     <td>Cappuccino</td>
+                    <td>75</td>
+                    <td>100</td>
+                    <td>24</td>
                     <td>3.75</td>
                     <td>Euro</td>
-                    <td><button>Update</button></td>
+                    <td><button>EDIT</button></td>
+                    <td><button>DELETE</button></td>
                   </tr>
             </table> 
+            </div>
+          </div>
+        <div class="col">
+            <img src="images/coffe_img.png" width = "350" height = "350">
+        </div>
+        <div class="col">
+          <div>
+            <iframe src="https://giphy.com/embed/Lny6Rw04nsOOc" width="240" height="180" frameBorder="0"></iframe>
+          </div>
+          Show reports here
         </div>
         </div>
     </div>
     <div class="container text-center">
         <div class="row">
         <div class="col">
-            <button type="button">ON/OFF</button>
+          <button>Save changes</button></a>
         </div>
         <div class="col">
-            output console
-        </div>
+          <a href="/home/dmartin/traineeship/Python/coffee_app/src/index.html"><button>HOME</button></a>
+          </div>
         <div class="col">
-            <input type="Text" id="user_input">
-            <label for="user_input">Choose product</label>
+          <button type="Button">Report</button> 
+          <button type="Button">Show profit</button> 
         </div>
         </div>
     </div>
