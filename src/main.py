@@ -60,6 +60,7 @@ async def get_money_report():
     report = f"{money_machine.CURRENCY} {money_machine.profit}"
     return report
 
+
 @app.put("/coffe_maker/")
 async def update_resources(ingredient: Ingredients, amount: IngredientAmount):
     """Takes ingredient and amount as user input to refill resources."""
@@ -67,8 +68,12 @@ async def update_resources(ingredient: Ingredients, amount: IngredientAmount):
     return coffee_maker.resources[ingredient]
 
 
-
-
+@app.post("/money_machine/profit/")
+async def update_profit():
+    """Sends the current profit to the client."""
+    money_machine.profit += 1           ## TODO nur Test!
+    profit = money_machine.profit
+    return profit
 
 
 # @app.put("/coffe_maker/{ingr_id}")

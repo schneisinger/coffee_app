@@ -10,7 +10,7 @@ class MoneyMachine:
     }
 
     def __init__(self):
-        self.profit = 0
+        self.profit = 7
         self.money_received = 0
 
     def report(self):
