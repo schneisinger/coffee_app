@@ -9,7 +9,7 @@ from enum import Enum
 import asyncio
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
-from menu import Menu
+from menu import Menu, MenuItem
 from coffee_maker import CoffeeMaker
 from money_machine import MoneyMachine
 
@@ -30,9 +30,14 @@ class Ingredients(str, Enum):
 
 class IngredientAmount(BaseModel):
     amount: int = Field(100, gt=0, lt=9999)
+    cost: float = Field(2.5, gt=0, lt=10)
+
+# class Recipe(BaseModel):
+#     for recipe in menu.menu:
+#         recipe: str(recipe)
 
 
-# FastAPI: 
+# FastAPI:
 app = FastAPI()
 
 
@@ -68,12 +73,32 @@ async def update_resources(ingredient: Ingredients, amount: IngredientAmount):
     return coffee_maker.resources[ingredient]
 
 
+@app.post("/menu/recipes/{name}")
+async def add_recipe(
+    name: str, water: IngredientAmount = 100, milk: IngredientAmount = 0,
+    coffee: IngredientAmount = 24, price: IngredientAmount = 2.5
+    ):
+    """Takes user input and creats a new recipe."""
+    new_menu_item = MenuItem(
+        name=name, water=water.amount, milk=milk.amount, coffee=coffee.amount, cost=price.cost
+        )
+    print(new_menu_item.name)
+    print(new_menu_item.cost)
+    print(new_menu_item.ingredients)
+    menu.menu.append(new_menu_item)
+    print(menu.menu)
+    #return menu.get_items()#[len(menu.menu -1)]
+    return new_menu_item
+
+
 @app.post("/money_machine/profit/")
 async def update_profit():
     """Sends the current profit to the client."""
     money_machine.profit += 1           ## TODO nur Test!
     profit = money_machine.profit
     return profit
+
+
 
 
 # @app.put("/coffe_maker/{ingr_id}")

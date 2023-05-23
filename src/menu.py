@@ -24,7 +24,7 @@ class Menu:
     def get_items(self):
         """Returns all the names of the available menu items"""
         options = {}
-        for item in self.menu: 
+        for item in self.menu:
             options[item.name] = item.cost
         return options
 
@@ -33,4 +33,4 @@ class Menu:
         for item in self.menu:
             if item.name == order_name:
                 return item
-        print("Sorry that item is not available.")
+        print("Sorry, that item is not available.")
