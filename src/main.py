@@ -18,25 +18,21 @@ coffee_maker = CoffeeMaker()
 money_machine = MoneyMachine()
 menu = Menu()
 
-#TODO Test for FastAPI
-
-class Unit(Enum):
+# Define data types:
+class IngredientUnit(Enum):
     GRAMM ="g"
     MILLILITER = "ml"
 
-class Euro(Enum):
-    CURRENCY ="Euro"
-
 class Ingredients(str, Enum):
-    water = "water"
-    milk = "milk"
-    coffee = "coffee"
- 
+    WATER = "water"
+    MILK = "milk"
+    COFFEE = "coffee"
 
 class IngredientAmount(BaseModel):
     amount: int = Field(100, gt=0, lt=9999)
-    #unit: Unit
 
+
+# FastAPI: 
 app = FastAPI()
 
 
@@ -47,20 +43,32 @@ async def read_root():
 
 @app.get("/menu/")
 async def get_menu():
+    """Returns items on the menu with prices."""
     return menu.get_items()
 
 
 @app.get("/coffee_maker/")
 async def get_report():
+    """Returns available ingredient-resources."""
     report = coffee_maker.resources
     return report
 
 
-#TODO Types Ingredients & IngredientAmount
+@app.get("/money_machine/")
+async def get_money_report():
+    """Returns current money in machine."""
+    report = f"{money_machine.CURRENCY} {money_machine.profit}"
+    return report
+
 @app.put("/coffe_maker/")
 async def update_resources(ingredient: Ingredients, amount: IngredientAmount):
+    """Takes ingredient and amount as user input to refill resources."""
     coffee_maker.refill(ingredient, amount.amount)
     return coffee_maker.resources[ingredient]
+
+
+
+
 
 
 # @app.put("/coffe_maker/{ingr_id}")
