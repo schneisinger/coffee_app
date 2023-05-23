@@ -1,7 +1,7 @@
 import uvicorn
 
 class App:
-    ...
+     ...
 
 app = App()
 

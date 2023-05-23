@@ -4,7 +4,7 @@
 # pylint: disable=missing-class-docstring
 
 """Doc string for modules"""
-import os
+# import os
 from enum import Enum
 import asyncio
 from fastapi import FastAPI
@@ -57,14 +57,10 @@ async def get_report():
 
 
 #TODO Types Ingredients & IngredientAmount
-@app.put("/coffe_maker/{ingr_id}")
-async def update_resources(ingr_id, ingredient: Ingredients, amount: IngredientAmount):
-    #coffee_maker.refill(ingr_id, amount)
-    #report = coffee_maker.resources
-    coffee_maker.resources[ingr_id] = ingredient
-    return coffee_maker.resources[ingr_id]
-
-
+@app.put("/coffe_maker/")
+async def update_resources(ingredient: Ingredients, amount: IngredientAmount):
+    coffee_maker.refill(ingredient, amount.amount)
+    return coffee_maker.resources[ingredient]
 
 
 # @app.put("/coffe_maker/{ingr_id}")
