@@ -30,7 +30,16 @@ class Ingredients(str, Enum):
 
 class IngredientAmount(BaseModel):
     amount: int = Field(100, gt=0, lt=9999)
+    
+class IngredientPrice(BaseModel):    
     cost: float = Field(2.5, gt=0, lt=10)
+
+class Receipt(BaseModel):
+    water: int = Field(100, gt=0, lt=9999)
+    milk: int = Field(100, gt=0, lt=9999)
+    coffee: int = Field(100, gt=0, lt=9999)
+    cost: float = Field(2.5, gt=0, lt=10)
+
 
 # class Recipe(BaseModel):
 #     for recipe in menu.menu:
@@ -75,12 +84,11 @@ async def update_resources(ingredient: Ingredients, amount: IngredientAmount):
 
 @app.post("/menu/recipes/{name}")
 async def add_recipe(
-    name: str, water: IngredientAmount = 100, milk: IngredientAmount = 0,
-    coffee: IngredientAmount = 24, price: IngredientAmount = 2.5
+    name: str, receipt: Receipt
     ):
     """Takes user input and creats a new recipe."""
     new_menu_item = MenuItem(
-        name=name, water=water.amount, milk=milk.amount, coffee=coffee.amount, cost=price.cost
+        name=name, water=receipt.water, milk=receipt.milk, coffee=receipt.coffee, cost=receipt.cost
         )
     print(new_menu_item.name)
     print(new_menu_item.cost)
