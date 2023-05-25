@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="col">
-            <img class="position" src="images/coffe_img.png" width = "250rem" height = "250rem">
+            <img src="images/coffe_img.png" width = "250rem" height = "250rem">
         </div>
         <div class="col">
           <div>
@@ -65,11 +65,48 @@
     <div class="container text-center">
       <div class="row align-items-center">
         <div class="col">
+          <div class="dropup-center m-1">
+            <button type="button" class="btn btn-info dropup-toggle" data-bs-toggle="dropdown">Refill</button></a>
+            <table class="table table-hover dropdown-menu p-4">
+              <tr>
+                <th>Ingredient</th>
+                <th>Amount</th>
+                <th></th>
+              </tr>
+              <tr>
+                <td>Coffee</td>
+                <td><input type="number" id="refill_coffee" maxlength="2" size="2"></td>
+                <td>g</td>
+                <td><button class="btn btn-primary">REFILL</button></td>
+                <!-- <td><button>DELETE</button></td> -->
+              </tr>
+              <tr>
+                <td>Water</td>
+                <td><input type="number" id="refill_water" maxlength="3" size="2"></td>
+                <td>ml</td>
+                <td><button class="btn btn-primary">REFILL</button></td>
+                <!-- <td><button>DELETE</button></td> -->
+              </tr>
+              <tr>
+                  <td>Milk</td>
+                  <td><input type="number" id="refill_milk" maxlength="3" size="2"></td>
+                  <td>ml</td>
+                  <td><button class="btn btn-primary">REFILL</button></td>
+                  <!-- <td><button>DELETE</button></td> -->
+                </tr>
+                <!-- <tr>
+                  <td><input type="text" id="add_ingredient" maxlength="8" size="8"></td>
+                  <td><input type="number" id="add_ingredient_amount" maxlength="4" size="3"></td>
+                  <td><input type="text" id="add_ingredient_unit" maxlength="2" size="2"></td>
+                  <td><button type="submit">ADD</button></td>
+                </tr> -->
+            </table>
+          </div>
           <button type="Button" class="btn btn-info"><i class="fa-solid fa-tree">Report</i></button> 
           <button type="Button" class="btn btn-info">Show profit</button> 
         </div>
         <div class="col">
-          <a href="/home/dmartin/traineeship/Python/coffee_app/src/turned_off.html"><button type="Button" class="btn btn-outline-dark">TURN ON/OFF</button></a>
+          <a href="/home/dmartin/traineeship/Python/coffee_app/src/turned_off.html"><button type="Button" class="btn btn-outline-dark">TURN OFF</button></a>
         </div>
         <div class="col"> 
             <div class="dropup-center">
@@ -129,43 +166,7 @@
               </table> 
             </div>   
           
-            <div class="dropup-center">
-              <button type="button" class="btn btn-info dropup-toggle" data-bs-toggle="dropdown">Ingredients & Refill</button></a>
-              <table class="table table-hover dropdown-menu p-4">
-                <tr>
-                  <th>Ingredient</th>
-                  <th>Amount</th>
-                  <th></th>
-                </tr>
-                <tr>
-                  <td>Coffee</td>
-                  <td><input type="number" id="refill_coffee" maxlength="2" size="2"></td>
-                  <td>g</td>
-                  <td><button>REFILL</button></td>
-                  <!-- <td><button>DELETE</button></td> -->
-                </tr>
-                <tr>
-                  <td>Water</td>
-                  <td><input type="number" id="refill_water" maxlength="3" size="2"></td>
-                      <td>ml</td>
-                      <td><button>REFILL</button></td>
-                      <!-- <td><button>DELETE</button></td> -->
-                  </tr>
-                  <tr>
-                    <td>Milk</td>
-                    <td><input type="number" id="refill_milk" maxlength="3" size="2"></td>
-                    <td>ml</td>
-                    <td><button>REFILL</button></td>
-                    <!-- <td><button>DELETE</button></td> -->
-                  </tr>
-                  <!-- <tr>
-                    <td><input type="text" id="add_ingredient" maxlength="8" size="8"></td>
-                    <td><input type="number" id="add_ingredient_amount" maxlength="4" size="3"></td>
-                    <td><input type="text" id="add_ingredient_unit" maxlength="2" size="2"></td>
-                    <td><button type="submit">ADD</button></td>
-                  </tr> -->
-              </table>
-            </div>
+            
         </div>
       </div>
     </div>
@@ -174,3 +175,5 @@
   </main>  
 </body>
 </html>
+
+
