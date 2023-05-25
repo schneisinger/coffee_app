@@ -9,22 +9,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
 <body>
+  <main class="container bg-light mt-3 mb-3 pt-2 pb-5">
     <h1 style="text-align:center">Hello, Coffee!</h1>
 
     <div class="container text-center">
       <div class="row">
-        <div class="col">
-          <div>
-            <iframe src="https://giphy.com/embed/Lny6Rw04nsOOc" width="240" height="180" frameBorder="0"></iframe>
+        <div class="col bg-dark text-success">
+          <div class="container">
+            output goes here 
           </div>
+          <div>
             Show reports & animations here
+          </div>
         </div>
         <div class="col">
-            <img src="images/coffe_img.png" width = "200" height = "200">
+            <img src="images/coffe_img.png" width = "250rem" height = "250rem">
         </div>
         <div class="col">
           <div>
-            <table>
+            <table class="table">
               <tr>
                 <th>Product</th>
                 <th>Price</th>
@@ -34,25 +37,25 @@
                 <td>Espresso</td>
                 <td>1.50</td>
                 <td>Euro</td>
-                <td><button>BREW</button></td>
+                <td><button type="Button" class="btn btn-primary">BREW</button></td>
               </tr>
               <tr>
                 <td>Americano</td>
                 <td>2.25</td>
                 <td>Euro</td>
-                <td><button>BREW</button></td>
+                <td><button type="Button" class="btn btn-primary">BREW</button></td>
               </tr>
               <tr>
                 <td>Latte</td>
                 <td>2.50</td>
                 <td>Euro</td>
-                <td><button>BREW</button></td>
+                <td><button type="Button" class="btn btn-primary">BREW</button></td>
               </tr>
               <tr>
                 <td>Cappuccino</td>
                 <td>3.75</td>
                 <td>Euro</td>
-                <td><button>BREW</button></td>
+                <td><button type="Button" class="btn btn-primary">BREW</button></td>
               </tr>
             </table>
           </div> 
@@ -62,19 +65,20 @@
     <div class="container text-center">
         <div class="row">
         <div class="col">
-          <button class="btn-primary" type="Button"><i class="fa-solid fa-tree"></i></button> 
-          <button type="Button">Show profit</button> 
+          <button type="Button" class="btn btn-info"><i class="fa-solid fa-tree">Report</i></button> 
+          <button type="Button" class="btn btn-info">Show profit</button> 
         </div>
         <div class="col">
-          <a href="/home/dmartin/traineeship/Python/coffee_app/src/turned_off.html"><button type="Button">TURN OFF</button></a>
+          <a href="/home/dmartin/traineeship/Python/coffee_app/src/turned_off.html"><button type="Button" class="btn btn-outline-dark" data-bs-toggle="button">TURN ON/OFF</button></a>
           </div>
         <div class="col">
-          <a href="/home/dmartin/traineeship/Python/coffee_app/src/recipes.html"><button>Recipes</button></a>
-          <a href="/home/dmartin/traineeship/Python/coffee_app/src/resources.html"><button>Ingredients & Refill</button></a>
+          <a href="/home/dmartin/traineeship/Python/coffee_app/src/recipes.html"><button type="Button" class="btn btn-info">Recipes</button></a>
+          <a href="/home/dmartin/traineeship/Python/coffee_app/src/resources.html"><button type="Button" class="btn btn-info">Ingredients & Refill</button></a>
         </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+  </main>  
 </body>
 </html>

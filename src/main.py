@@ -34,16 +34,11 @@ class IngredientAmount(BaseModel):
 class IngredientPrice(BaseModel):    
     cost: float = Field(2.5, gt=0, lt=10)
 
-class Receipt(BaseModel):
+class Recipe(BaseModel):
     water: int = Field(100, gt=0, lt=9999)
     milk: int = Field(100, gt=0, lt=9999)
     coffee: int = Field(100, gt=0, lt=9999)
     cost: float = Field(2.5, gt=0, lt=10)
-
-
-# class Recipe(BaseModel):
-#     for recipe in menu.menu:
-#         recipe: str(recipe)
 
 
 # FastAPI:
@@ -76,7 +71,7 @@ async def get_money_report():
 
 
 @app.put("/coffe_maker/")
-async def update_resources(ingredient: Ingredients, amount: IngredientAmount):
+async def refill_resources(ingredient: Ingredients, amount: IngredientAmount):
     """Takes ingredient and amount as user input to refill resources."""
     coffee_maker.refill(ingredient, amount.amount)
     return coffee_maker.resources[ingredient]
@@ -84,7 +79,7 @@ async def update_resources(ingredient: Ingredients, amount: IngredientAmount):
 
 @app.post("/menu/recipes/{name}")
 async def add_recipe(
-    name: str, receipt: Receipt
+    name: str, receipt: Recipe
     ):
     """Takes user input and creats a new recipe."""
     new_menu_item = MenuItem(
