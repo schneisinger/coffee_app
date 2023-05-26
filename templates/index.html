@@ -5,8 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>This machine is brewing coffee</title>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="static/style.css"/>
+
     </head>
 <body>
   <main class="container bg-light mt-3 mb-3 pt-2 pb-5">
@@ -14,16 +17,12 @@
 
     <div class="container text-center">
       <div class="row align-items-center">
-        <div class="col bg-dark text-success">
-          <div class="container">
-            output goes here 
-          </div>
-          <div>
-            Show reports & animations here
-          </div>
+        <div class="terminal col bg-dark text-success font-monospace" id="terminal">
+          <!-- <canvas id="output_screen" width="400rem" height="225rem" style="border:1px solid #000000;"></canvas> -->
+            text
         </div>
         <div class="col">
-            <img src="images/coffe_img.png" width = "250rem" height = "250rem">
+            <img src="/static/images/coffe_img.png" width = "250rem" height = "250rem">
         </div>
         <div class="col">
           <div>
@@ -37,25 +36,25 @@
                 <td>Espresso</td>
                 <td>1.50</td>
                 <td>Euro</td>
-                <td><button type="Button" class="btn btn-primary">BREW</button></td>
+                <td><button type="Button" class="btn btn-primary"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
               </tr>
               <tr>
                 <td>Americano</td>
                 <td>2.25</td>
                 <td>Euro</td>
-                <td><button type="Button" class="btn btn-primary">BREW</button></td>
+                <td><button type="Button" class="btn btn-primary"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
               </tr>
               <tr>
                 <td>Latte</td>
                 <td>2.50</td>
                 <td>Euro</td>
-                <td><button type="Button" class="btn btn-primary">BREW</button></td>
+                <td><button type="Button" class="btn btn-primary"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
               </tr>
               <tr>
                 <td>Cappuccino</td>
                 <td>3.75</td>
                 <td>Euro</td>
-                <td><button type="Button" class="btn btn-primary">BREW</button></td>
+                <td><button type="Button" class="btn btn-primary"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
               </tr>
             </table>
           </div> 
@@ -65,8 +64,8 @@
     <div class="container text-center">
       <div class="row align-items-center">
         <div class="col">
-          <div class="dropup-center m-1">
-            <button type="button" class="btn btn-info dropup-toggle" data-bs-toggle="dropdown">Refill</button></a>
+          <div class="dropup-center m-1 d-grid">
+            <button type="button" class="btn btn-info dropup-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-gas-pump"></i> Refill</button></a>
             <table class="table table-hover dropdown-menu p-4">
               <tr>
                 <th>Ingredient</th>
@@ -77,21 +76,21 @@
                 <td>Coffee</td>
                 <td><input type="number" id="refill_coffee" maxlength="2" size="2"></td>
                 <td>g</td>
-                <td><button class="btn btn-primary">REFILL</button></td>
+                <td><button class="btn btn-primary"><i class="fa-solid fa-tablets"></i> REFILL</button></td>
                 <!-- <td><button>DELETE</button></td> -->
               </tr>
               <tr>
                 <td>Water</td>
                 <td><input type="number" id="refill_water" maxlength="3" size="2"></td>
                 <td>ml</td>
-                <td><button class="btn btn-primary">REFILL</button></td>
+                <td><button class="btn btn-primary"><i class="fa-solid fa-droplet"></i>  REFILL</button></td>
                 <!-- <td><button>DELETE</button></td> -->
               </tr>
               <tr>
                   <td>Milk</td>
                   <td><input type="number" id="refill_milk" maxlength="3" size="2"></td>
                   <td>ml</td>
-                  <td><button class="btn btn-primary">REFILL</button></td>
+                  <td><button class="btn btn-primary"><i class="fa-solid fa-cow"></i> REFILL</button></td>
                   <!-- <td><button>DELETE</button></td> -->
                 </tr>
                 <!-- <tr>
@@ -102,15 +101,15 @@
                 </tr> -->
             </table>
           </div>
-          <button type="Button" class="btn btn-info"><i class="fa-solid fa-tree">Report</i></button> 
-          <button type="Button" class="btn btn-info">Show profit</button> 
+          <button type="Button" class="btn btn-info" id="report"><i class="fa-solid fa-clipboard-list"></i> Report</i></button> 
+          <button type="Button" class="btn btn-info"><i class="fa-solid fa-money-bill-trend-up"></i> Show profit</button> 
         </div>
         <div class="col">
-          <a href="/home/dmartin/traineeship/Python/coffee_app/src/turned_off.html"><button type="Button" class="btn btn-outline-dark">TURN OFF</button></a>
+          <a href="/home/dmartin/traineeship/Python/coffee_app/src/turned_off.html"><button type="Button" class="btn btn-lg btn-outline-dark"><i class="fa-solid fa-power-off"></i></button></a>
         </div>
         <div class="col"> 
-            <div class="dropup-center">
-              <button type="Button" class="btn btn-info dropup-toggle" data-bs-toggle="dropdown">Recipes</button></a>
+            <div class="dropup-center d-grid">
+              <button type="Button" class="btn btn-info dropup-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-table-list"></i> Recipes</button></a>
               <table class="table table-responsive table-sm table-hover dropdown-menu p-2">
                 <tr>
                   <th>Product</th>
@@ -171,6 +170,7 @@
       </div>
     </div>
     
+    <script src="static/script.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
   </main>  
 </body>
