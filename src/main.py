@@ -8,9 +8,9 @@
 from enum import Enum
 import asyncio
 from fastapi import FastAPI, Request
-from pydantic import BaseModel, Field
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel, Field
 from menu import Menu, MenuItem
 from coffee_maker import CoffeeMaker
 from money_machine import MoneyMachine
@@ -52,7 +52,9 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
 async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("index.html", {"request": request, "ON":RUNNING})
+
+@app.route
 
 @app.get("/menu/")
 async def get_menu():
@@ -106,11 +108,10 @@ async def update_profit():
     return profit
 
 
+RUNNING = True
 
 
-# @app.put("/coffe_maker/{ingr_id}")
-# async def update_resources(ingr_id: Ingredients, item):
-#     coffee_maker.resources[ingr_id] = item
+# ___________________________________________________________
 
 ### 23 05 16 - old code below
 

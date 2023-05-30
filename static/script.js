@@ -1,16 +1,10 @@
 
-// TEST Output field 
-// var canvas = document.getElementById("output_screen");
-// var ctx = canvas.getContext("2d");
-// ctx.font = "15px Arial";
-// ctx.fillStyle = "lime";
-// ctx.textAlign = "center";
-// ctx.fillText("Hello, world. \nOutput & animations go here.", 200, 50);
-
 // Objekt in Browserkonsole
 // console.log($("#terminal"));
 // temp1.text("testetxt"); 
 
+
+// GET report by button 
 $("#report").on("click", function(){
     $.ajax({
         url: "/coffee_maker/",
@@ -18,4 +12,19 @@ $("#report").on("click", function(){
     }).done(function(report_data) {
         console.log(report_data);
     });
+});
+
+
+// Invert variable RUNNING 
+var ON = false;
+
+$("#on_off").on("click", function(){
+    
+    function(){
+    if( ON === false){
+        RUNNING = true;
+   } else{
+        RUNNING = false;
+   }
+}
 });
