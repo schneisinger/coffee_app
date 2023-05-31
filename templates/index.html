@@ -14,15 +14,17 @@
     </head>
 <body ON="true">
   <main class="container bg-light mt-3 mb-3 pt-2 pb-5">
-    <h1 style="text-align:center">Hello, Coffee!</h1>
+    <h1 style="text-align:center"class="container font-monospace" id="main_name">CoffeeMaker8000</h1>
 
     <div class="container text-center">
       <div class="row align-items-center">
-        <div class="terminal col bg-dark text-success font-monospace" id="terminal">
+        <div class="terminal col bg-dark text-success font-monospace pt-5" id="terminal">
           {%if ON %}
-            text
+          <p id="terminal_text">
+            <!-- Output goes here -->
+          </p>
           {% endif %}
-        </div>
+          </div>
         <div class="col">
             <img src="/static/images/coffe_img.png" width = "250rem" height = "250rem">
         </div>
@@ -39,25 +41,25 @@
                 <td>Espresso</td>
                 <td>1.50</td>
                 <td>Euro</td>
-                <td><button type="Button" class="btn btn-primary"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
+                <td><button type="Button" class="btn btn-primary" id="brew_espresso"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
               </tr>
               <tr>
                 <td>Americano</td>
                 <td>2.25</td>
                 <td>Euro</td>
-                <td><button type="Button" class="btn btn-primary"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
+                <td><button type="Button" class="btn btn-primary" id="brew_americano"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
               </tr>
               <tr>
                 <td>Latte</td>
                 <td>2.50</td>
                 <td>Euro</td>
-                <td><button type="Button" class="btn btn-primary"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
+                <td><button type="Button" class="btn btn-primary" id="brew_latte"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
               </tr>
               <tr>
                 <td>Cappuccino</td>
                 <td>3.75</td>
                 <td>Euro</td>
-                <td><button type="Button" class="btn btn-primary"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
+                <td><button type="Button" class="btn btn-primary" id="brew_cappuccino"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
               </tr>
             </table>
             {% endif %}
@@ -79,23 +81,23 @@
               </tr>
               <tr>
                 <td>Coffee</td>
-                <td><input type="number" id="refill_coffee" maxlength="2" size="2"></td>
+                <td><input type="number" id="amount_coffee" maxlength="2" size="2"></td>
                 <td>g</td>
-                <td><button class="btn btn-primary"><i class="fa-solid fa-tablets"></i> REFILL</button></td>
+                <td><button class="btn btn-primary" id="refill_coffee"><i class="fa-solid fa-tablets"></i> REFILL</button></td>
                 <!-- <td><button>DELETE</button></td> -->
               </tr>
               <tr>
                 <td>Water</td>
-                <td><input type="number" id="refill_water" maxlength="3" size="2"></td>
+                <td><input type="number" id="amount_water" maxlength="3" size="2"></td>
                 <td>ml</td>
-                <td><button class="btn btn-primary"><i class="fa-solid fa-droplet"></i>  REFILL</button></td>
+                <td><button class="btn btn-primary" id="refill_water"><i class="fa-solid fa-droplet"></i>  REFILL</button></td>
                 <!-- <td><button>DELETE</button></td> -->
               </tr>
               <tr>
                   <td>Milk</td>
-                  <td><input type="number" id="refill_milk" maxlength="3" size="2"></td>
+                  <td><input type="number" id="amount_milk" maxlength="3" size="2"></td>
                   <td>ml</td>
-                  <td><button class="btn btn-primary"><i class="fa-solid fa-cow"></i> REFILL</button></td>
+                  <td><button class="btn btn-primary" id="refill_milk"><i class="fa-solid fa-cow"></i> REFILL</button></td>
                   <!-- <td><button>DELETE</button></td> -->
                 </tr>
                 <!-- <tr>
@@ -107,7 +109,7 @@
             </table>
           </div>
           <button type="Button" class="btn btn-info" id="report"><i class="fa-solid fa-clipboard-list"></i> Report</i></button> 
-          <button type="Button" class="btn btn-info"><i class="fa-solid fa-money-bill-trend-up"></i> Show profit</button> 
+          <button type="Button" class="btn btn-info" id="profit_report"><i class="fa-solid fa-money-bill-trend-up"></i> Show profit</button> 
           {% endif %}
         </div>
         <div class="col">

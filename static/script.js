@@ -4,27 +4,37 @@
 // temp1.text("testetxt"); 
 
 
-// GET report by button 
+// GET report of resources
 $("#report").on("click", function(){
     $.ajax({
         url: "/coffee_maker/",
-        // context: document.body
     }).done(function(report_data) {
-        console.log(report_data);
+        document.getElementById("terminal_text").innerHTML = 'Current resources available: ' + '<br>' + '<br>' + 'Water: ' + report_data.water + '<br>' + 'Milk: ' + report_data.milk + '<br>' + 'Coffee: ' + report_data.coffee; 
     });
 });
 
 
-// Invert variable RUNNING 
-var ON = false;
+// GET report of current profit 
+$("#profit_report").on("click", function(){
+    $.ajax({
+        url: "/money_machine/",
+    }).done(function(report_data) {
+        document.getElementById("terminal_text").innerHTML = 'Current profit is: ' + '<br>' + '<br>' + report_data
+    });
+});
+
+
+
+
+
+
+
+// Invert variable ON for RUNNING 
+ var ON = Boolean;
 
 $("#on_off").on("click", function(){
-    
-    function(){
-    if( ON === false){
-        RUNNING = true;
-   } else{
-        RUNNING = false;
-   }
-}
+    console.log('first:' + ON)
+    ON = !ON
+    console.log('then: ' + ON)
 });
+

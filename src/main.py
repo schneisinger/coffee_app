@@ -10,6 +10,7 @@ import asyncio
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from jinja2 import Template
 from pydantic import BaseModel, Field
 from menu import Menu, MenuItem
 from coffee_maker import CoffeeMaker
@@ -50,11 +51,12 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
+
 @app.get("/")
 async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "ON":RUNNING})
+    ON = True
+    return templates.TemplateResponse("index.html", {"request": request, "ON": ON})
 
-@app.route
 
 @app.get("/menu/")
 async def get_menu():
@@ -106,10 +108,6 @@ async def update_profit():
     money_machine.profit += 1           ## TODO nur Test!
     profit = money_machine.profit
     return profit
-
-
-RUNNING = True
-
 
 # ___________________________________________________________
 
