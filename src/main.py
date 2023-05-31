@@ -78,7 +78,7 @@ async def get_money_report():
     return report
 
 
-@app.put("/coffe_maker/")
+@app.put("/coffe_maker/{ingredient}")
 async def refill_resources(ingredient: Ingredients, amount: IngredientAmount):
     """Takes ingredient and amount as user input to refill resources."""
     coffee_maker.refill(ingredient, amount.amount)
@@ -87,11 +87,11 @@ async def refill_resources(ingredient: Ingredients, amount: IngredientAmount):
 
 @app.post("/menu/recipes/{name}")
 async def add_recipe(
-    name: str, receipt: Recipe
+    name: str, recipe: Recipe
     ):
     """Takes user input and creats a new recipe."""
     new_menu_item = MenuItem(
-        name=name, water=receipt.water, milk=receipt.milk, coffee=receipt.coffee, cost=receipt.cost
+        name=name, water=recipe.water, milk=recipe.milk, coffee=recipe.coffee, cost=recipe.cost
         )
     print(new_menu_item.name)
     print(new_menu_item.cost)
