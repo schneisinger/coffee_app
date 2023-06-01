@@ -12,14 +12,12 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import Template
 from pydantic import BaseModel, Field
-from menu import Menu, MenuItem
 from coffee_maker import CoffeeMaker
 from money_machine import MoneyMachine
 
 
 coffee_maker = CoffeeMaker()
 money_machine = MoneyMachine()
-menu = Menu()
 
 # Define data types:
 class IngredientUnit(Enum):
@@ -43,6 +41,22 @@ class Recipe(BaseModel):
     coffee: int = Field(100, gt=0, lt=9999)
     cost: float = Field(2.5, gt=0, lt=10)
 
+class MenuItem():
+    name = str
+    price = IngredientPrice
+    ingredients = {
+        Ingredients.WATER: IngredientAmount,
+        Ingredients.MILK: IngredientAmount,
+        Ingredients.COFFEE: IngredientAmount
+    }
+
+menu = [
+    {"name":"latte", "water": 200, "milk": 150, "coffee": 24, "price": 2.5},
+    {"name":"espresso", "water": 50, "milk": 0, "coffee": 18, "price": 1.5},
+    {"name":"americano", "water": 125, "milk": 0, "coffee": 36, "price": 2.25},
+    {"name":"cappuccino", "water": 75, "milk": 100, "coffee": 24, "price": 3.75},
+    ]
+
 
 # FastAPI:
 app = FastAPI()
@@ -55,13 +69,7 @@ templates = Jinja2Templates(directory="templates")
 @app.get("/")
 async def read_root(request: Request):
     ON = True
-    return templates.TemplateResponse("index.html", {"request": request, "ON": ON})
-
-
-@app.get("/menu/")
-async def get_menu():
-    """Returns items on the menu with prices."""
-    return menu.get_items()
+    return templates.TemplateResponse("index.html", {"request": request, "menu": menu, "ON": ON})
 
 
 @app.get("/coffee_maker/")
@@ -85,21 +93,12 @@ async def refill_resources(ingredient: Ingredients, amount: IngredientAmount):
     return coffee_maker.resources[ingredient]
 
 
-@app.post("/menu/recipes/{name}")
-async def add_recipe(
-    name: str, recipe: Recipe
-    ):
-    """Takes user input and creats a new recipe."""
-    new_menu_item = MenuItem(
-        name=name, water=recipe.water, milk=recipe.milk, coffee=recipe.coffee, cost=recipe.cost
-        )
-    print(new_menu_item.name)
-    print(new_menu_item.cost)
-    print(new_menu_item.ingredients)
-    menu.menu.append(new_menu_item)
-    print(menu.menu)
-    #return menu.get_items()#[len(menu.menu -1)]
-    return new_menu_item
+# @app.post("/menu/recipes/")
+# async def add_recipe(menu_item: MenuItem):
+#     """Takes user input and creats a new recipe."""
+#     new_menu_item = menu_item
+#     menu.append(new_menu_item)
+#     return menu
 
 
 @app.post("/money_machine/profit/")

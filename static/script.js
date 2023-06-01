@@ -9,7 +9,8 @@ $("#report").on("click", function(){
     $.ajax({
         url: "/coffee_maker/",
     }).done(function(report_data) {
-        document.getElementById("terminal_text").innerHTML = 'Current resources available: ' + '<br>' + '<br>' + 'Water: ' + report_data.water + '<br>' + 'Milk: ' + report_data.milk + '<br>' + 'Coffee: ' + report_data.coffee; 
+        console.log(report_data)
+        document.getElementById("terminal_text").innerHTML = 'Current resources available: ' + '<br>' + '<br>' + 'Water: ' + report_data.water + ' ml' + '<br>' + 'Milk: ' + report_data.milk + ' ml' + '<br>' + 'Coffee: ' + report_data.coffee + ' g'; 
     });
 });
 

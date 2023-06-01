@@ -28,23 +28,39 @@
         <div class="col">
             <img src="/static/images/coffe_img.png" width = "250rem" height = "250rem">
         </div>
-        <div class="col" id="menu">
+        <div class="col">
           <div>
             {%if ON %}
-            <table class="table table-hover" id="menu_items">
+            <table class="table table-hover">
               <tr>
                 <th>Product</th>
                 <th>Price</th>
                 <th></th>
               </tr>
-              {% for item in menu %}
               <tr>
-                <td>{{item.name.capitalize()}}</td>
-                <td>{{item.price}}</td>
+                <td>Espresso</td>
+                <td>1.50</td>
                 <td>Euro</td>
-                <td><button type="Button" class="btn btn-primary" id="brew_{{item.name}}"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
+                <td><button type="Button" class="btn btn-primary" id="brew_espresso"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
               </tr>
-              {% endfor %}
+              <tr>
+                <td>Americano</td>
+                <td>2.25</td>
+                <td>Euro</td>
+                <td><button type="Button" class="btn btn-primary" id="brew_americano"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
+              </tr>
+              <tr>
+                <td>Latte</td>
+                <td>2.50</td>
+                <td>Euro</td>
+                <td><button type="Button" class="btn btn-primary" id="brew_latte"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
+              </tr>
+              <tr>
+                <td>Cappuccino</td>
+                <td>3.75</td>
+                <td>Euro</td>
+                <td><button type="Button" class="btn btn-primary" id="brew_cappuccino"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
+              </tr>
             </table>
             {% endif %}
           </div> 
@@ -111,24 +127,49 @@
                   <th>Coffee [g]</th>
                   <th>Price [Euro]</th>
                 </tr>
-              {% for item in menu %}
-              <tr>
-                <td>{{item.name.capitalize()}}</td>
-                <td>{{item.water}}</td>
-                <td>{{item.milk}}</td>
-                <td>{{item.coffee}}</td>
-                <td>{{item.price}}</td>
-                <td><button type="Button" class="btn btn-sm btn-primary" id="add_{{item.name}}"> <i class="fa-solid fa-pen"></i></button></td>
-                <td><button type="Button" class="btn btn-sm btn-primary" id="delete_{{item.name}}"><i class="fa-regular fa-trash-can"></i></button></td>
+                <tr>
+                  <td>Espresso</td>
+                  <td>50</td>
+                  <td>0</td>
+                  <td>18</td>
+                  <td>1.50</td>
+                  <td><button>EDIT</button></td>
+                <td><button>DELETE</button></td>
               </tr>
-              {% endfor %}
+              <tr>
+                <td>Americano</td>
+                <td>125</td>
+                <td>0</td>
+                <td>36</td>
+                <td>2.25</td>
+                <td><button>EDIT</button></td>
+                <td><button>DELETE</button></td>
+              </tr>
+              <tr>
+                <td>Latte</td>
+                <td>200</td>
+                <td>150</td>
+                <td>24</td>
+                <td>2.50</td>
+                <td><button>EDIT</button></td>
+                <td><button>DELETE</button></td>
+              </tr>
+              <tr>
+                <td>Cappuccino</td>
+                <td>75</td>
+                <td>100</td>
+                <td>24</td>
+                <td>3.75</td>
+                <td><button>EDIT</button></td>
+                <td><button>DELETE</button></td>
+              </tr>
               <tr>
                 <td><input type="text" id="add_recipe" maxlength="8" size="8"></td>
                 <td><input type="number" id="add_recipe_water" maxlength="3" size="2"></td>
                 <td><input type="number" id="add_recipe_milk" maxlength="3" size="2"></td>
                 <td><input type="number" id="add_recipe_coffee" maxlength="2" size="2"></td>
                 <td><input type="number" id="add_recipe_price" maxlength="4" size="3"></td>
-                <td><button type="submit" class="btn btn-sm btn-primary" id="add_new_recipe"><i class="fa-solid fa-plus"></i></button></td>
+                <td><button type="submit">ADD</button></td>
               </tr>
               </table> 
             </div>   
