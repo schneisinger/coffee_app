@@ -67,29 +67,20 @@
                 <td>Coffee</td>
                 <td><input type="number" id="amount_coffee" maxlength="2" size="2"></td>
                 <td>g</td>
-                <td><button class="btn btn-primary" id="refill_coffee"><i class="fa-solid fa-tablets"></i> REFILL</button></td>
-                <!-- <td><button>DELETE</button></td> -->
+                <td><button class="btn btn-primary refill_btn" id="refill_coffee"><i class="fa-solid fa-tablets"></i> REFILL</button></td>
               </tr>
               <tr>
                 <td>Water</td>
                 <td><input type="number" id="amount_water" maxlength="3" size="2"></td>
                 <td>ml</td>
-                <td><button class="btn btn-primary" id="refill_water"><i class="fa-solid fa-droplet"></i>  REFILL</button></td>
-                <!-- <td><button>DELETE</button></td> -->
+                <td><button class="btn btn-primary refill_btn" id="refill_water"><i class="fa-solid fa-droplet"></i>  REFILL</button></td>
               </tr>
               <tr>
                   <td>Milk</td>
                   <td><input type="number" id="amount_milk" maxlength="3" size="2"></td>
                   <td>ml</td>
-                  <td><button class="btn btn-primary" id="refill_milk"><i class="fa-solid fa-cow"></i> REFILL</button></td>
-                  <!-- <td><button>DELETE</button></td> -->
+                  <td><button class="btn btn-primary refill_btn" id="refill_milk"><i class="fa-solid fa-cow"></i> REFILL</button></td>
                 </tr>
-                <!-- <tr>
-                  <td><input type="text" id="add_ingredient" maxlength="8" size="8"></td>
-                  <td><input type="number" id="add_ingredient_amount" maxlength="4" size="3"></td>
-                  <td><input type="text" id="add_ingredient_unit" maxlength="2" size="2"></td>
-                  <td><button type="submit">ADD</button></td>
-                </tr> -->
             </table>
           </div>
           <button type="Button" class="btn btn-info" id="report"><i class="fa-solid fa-clipboard-list"></i> Report</i></button> 
@@ -123,7 +114,7 @@
               </tr>
               {% endfor %}
               <tr>
-                <td><input type="text" id="add_recipe" maxlength="8" size="8"></td>
+                <td><input type="text" id="add_recipe_name" maxlength="8" size="8"></td>
                 <td><input type="number" id="add_recipe_water" maxlength="3" size="2"></td>
                 <td><input type="number" id="add_recipe_milk" maxlength="3" size="2"></td>
                 <td><input type="number" id="add_recipe_coffee" maxlength="2" size="2"></td>

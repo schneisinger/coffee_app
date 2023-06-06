@@ -32,3 +32,4 @@ class CoffeeMaker:
     def refill(self, item, amount):
         """Takes item & amount as user input and adds to resources."""
         self.resources[item] += amount
+        

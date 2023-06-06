@@ -86,11 +86,11 @@ async def get_money_report():
     return report
 
 
-@app.put("/coffe_maker/{ingredient}")
+@app.put("/coffee_maker/{ingredient}")
 async def refill_resources(ingredient: Ingredients, amount: IngredientAmount):
     """Takes ingredient and amount as user input to refill resources."""
     coffee_maker.refill(ingredient, amount.amount)
-    return coffee_maker.resources[ingredient]
+    return None # coffee_maker.resources[ingredient]
 
 
 # @app.post("/menu/recipes/")
