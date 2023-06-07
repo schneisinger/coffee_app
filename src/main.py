@@ -86,12 +86,18 @@ async def get_money_report():
     return report
 
 
-@app.put("/coffee_maker/{ingredient}")
-async def refill_resources(ingredient: Ingredients, amount: IngredientAmount):
+@app.put("/coffee_maker/")
+async def refill_resources(data: dict):
     """Takes ingredient and amount as user input to refill resources."""
-    coffee_maker.refill(ingredient, amount.amount)
+    # coffee_maker.refill(ingredient, amount.amount)
+
+    for ingr, amount in data.items():
+            coffee_maker.refill(ingr, amount)
+
     return None # coffee_maker.resources[ingredient]
 
+
+# ingredient: Ingredients, amount: IngredientAmount
 
 # @app.post("/menu/recipes/")
 # async def add_recipe(menu_item: MenuItem):

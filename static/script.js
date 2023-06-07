@@ -38,21 +38,26 @@ $(function(){
         console.log(amount)
         console.log(typeof(amount))
 
-        var myJSONObject = {"ingredient": "coffee", "amount": amount};
+        var myJSONObject = {"coffee": amount};
         console.log(typeof(myJSONObject))
 
-        // var refill = myJSONObject;
+        // var refill = strin
         // console.log(typeof(refill))
 
         $.ajax({
             type: 'PUT',
-            url: '/coffee_maker/coffee/', 
-            data: myJSONObject, 
+            url: '/coffee_maker/', 
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(myJSONObject), 
             success: function(){
                 console.log("Refilled")
                 // document.getElementById("terminal_text").innerHTML = 'Refilled: ' + '<br>' + didRefill.amount + 'g of ' + didRefill.ingredient;
                 // document.getElementById("amount_coffee").innerHTML = 0;
-            }
+            },
+            error: function() {
+                alert('Refill failed')
+            },
             });
         });
 
@@ -65,6 +70,5 @@ $(function(){
         ON = !ON
         console.log('then: ' + ON)
     });
-
 
 });
