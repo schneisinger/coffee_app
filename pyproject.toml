@@ -1,7 +1,7 @@
 [tool.pdm]
 
 [tool.pdm.scripts]
-start = "uvicorn main:app --reload"
+start = "uvicorn main:app --host=0.0.0.0 --reload"
 
 [project]
 name = "coffee_app"
