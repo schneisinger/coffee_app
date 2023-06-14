@@ -1,10 +1,13 @@
 [tool.pdm]
 
 [tool.pdm.scripts]
-start = "uvicorn main:app --host=0.0.0.0 --reload"
+start = "uvicorn coffee.main:app --host=0.0.0.0"
+
+[tool.pdm.build]
+includes = ["coffee/static/"]
 
 [project]
-name = "coffee_app"
+name = "coffee"
 version = "0.0.1"
 description = ""
 authors = [
