@@ -12,6 +12,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import Template
 from pydantic import BaseModel, Field
+from pathlib import Path
 from coffee.coffee_maker import CoffeeMaker
 from coffee.money_machine import MoneyMachine
 
@@ -63,7 +64,8 @@ app = FastAPI()
 
 app.mount("/static", StaticFiles(packages=[('coffee', 'static')]), name="static")
 
-templates = Jinja2Templates(directory="templates/")
+BASE_PATH = Path(__file__).resolve().parent
+templates = Jinja2Templates(directory=str(BASE_PATH / "templates"))
 
 
 @app.get("/")

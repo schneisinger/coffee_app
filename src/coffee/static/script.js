@@ -62,13 +62,13 @@ $(function(){
         });
 
 
-    // Invert variable ON for RUNNING 
-    var ON = Boolean;
-
+    // Invert variable ON for RUNNING    
     $("#on_off").on("click", function(){
-        console.log('first:' + ON)
-        ON = !ON
-        console.log('then: ' + ON)
+        var ON = document.getElementsByClassName('ON');
+
+        for (var i = 0; i < ON.length; i ++) {
+            ON[i].style.display = 'none';
+        }
     });
 
 });
