@@ -12,8 +12,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import Template
 from pydantic import BaseModel, Field
-from .coffee_maker import CoffeeMaker
-from .money_machine import MoneyMachine
+from coffee.coffee_maker import CoffeeMaker
+from coffee.money_machine import MoneyMachine
 
 
 coffee_maker = CoffeeMaker()
@@ -63,13 +63,12 @@ app = FastAPI()
 
 app.mount("/static", StaticFiles(packages=[('coffee', 'static')]), name="static")
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="templates/")
 
 
 @app.get("/")
 async def read_root(request: Request):
-    ON = True
-    return templates.TemplateResponse("index.html", {"request": request, "menu": menu, "ON": ON})
+    return templates.TemplateResponse("index.html", {"request": request, "menu": menu})
 
 
 @app.get("/coffee_maker/")

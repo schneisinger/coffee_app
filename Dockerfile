@@ -2,7 +2,7 @@
 FROM python:3.10 AS builder
 
 # install PDM -> plus Version 
-RUN pip install pdm 
+RUN pip install pdm==2.6.1
 
 # COPY . /workdir
 COPY pyproject.toml pdm.lock /workdir/
@@ -10,20 +10,22 @@ COPY src/ /workdir/src
 
 WORKDIR /workdir 
 
-# RUN mkdir -p __pypackages__ && pdm build && pdm sync --prod --no-editable
+RUN mkdir -p __pypackages__ && pdm sync --prod --no-editable
 
 # run stage 
-# FROM python:3.10
+FROM python:3.10
 
 # retrieve packages from build stage
-# EXPOSE 8000
-# ENV PATH=$PATH:/workdir/pkgs -> ..../bin 
-# PYTHONPATH  ..../lib 
+EXPOSE 8000
 
-# RUN mkdir -p /workdir/pkgs
+RUN mkdir -p /workdir/__pypackages__
 
-# COPY --from=builder /workdir/__pypackages__/3.10/lib /workdir/pkgs
+COPY --from=builder /workdir/__pypackages__/3.10/lib /workdir/__pypackages__/lib
+COPY --from=builder /workdir/__pypackages__/3.10/bin /workdir/__pypackages__/bin
+
+ENV PATH=$PATH:/workdir/__pypackages__/bin
+ENV PYTHONPATH=/workdir/__pypackages__/lib:/workdir/__pypackages__/lib/coffee
 
 # CMD ["pdm", "run", "start"]
-# CMD ["uvicorn", "main:app"]
+CMD ["uvicorn", "main:app", "--host=0.0.0.0"]
 

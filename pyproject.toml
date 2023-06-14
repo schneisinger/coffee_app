@@ -1,10 +1,8 @@
 [tool.pdm]
 
-[tool.pdm.scripts]
-start = "uvicorn coffee.main:app --host=0.0.0.0"
-
-[tool.pdm.build]
-includes = ["coffee/static/"]
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
 [project]
 name = "coffee"
@@ -19,3 +17,10 @@ dependencies = [
 ]
 requires-python = ">=3.10"
 license = {text = "MIT"}
+
+[tool.pdm.scripts]
+start = "uvicorn coffee.main:app --host=0.0.0.0 --reload"
+
+[tool.pdm.build]
+includes = ["src", "src/static/*", "src/templates/*"]
+package-dir = "src"
