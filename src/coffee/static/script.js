@@ -34,15 +34,8 @@ $(function(){
     // Coffee 
     $("#refill_coffee").on("click", function(){
 
-        amount = parseInt($amount_coffee.val())
-        console.log(amount)
-        console.log(typeof(amount))
-
+        var amount = parseInt($amount_coffee.val())
         var myJSONObject = {"coffee": amount};
-        console.log(typeof(myJSONObject))
-
-        // var refill = strin
-        // console.log(typeof(refill))
 
         $.ajax({
             type: 'PUT',
@@ -52,8 +45,8 @@ $(function(){
             data: JSON.stringify(myJSONObject), 
             success: function(){
                 console.log("Refilled")
-                // document.getElementById("terminal_text").innerHTML = 'Refilled: ' + '<br>' + didRefill.amount + 'g of ' + didRefill.ingredient;
-                // document.getElementById("amount_coffee").innerHTML = 0;
+                document.getElementById("terminal_text").innerHTML = 'Refilled: ' + '<br>' + '<br>' + amount + 'g of coffee.';
+                amount = 0;
             },
             error: function() {
                 alert('Refill failed')
@@ -61,14 +54,22 @@ $(function(){
             });
         });
 
+    // Invert variable ON for RUNNING
+    var ON = true 
 
-    // Invert variable ON for RUNNING    
     $("#on_off").on("click", function(){
-        var ON = document.getElementsByClassName('ON');
-
-        for (var i = 0; i < ON.length; i ++) {
-            ON[i].style.display = 'none';
+        ON = !ON
+        var turn_off = document.getElementsByClassName('ON');
+        if (ON === false) {
+            for (var i = 0; i < turn_off.length; i ++) {
+                turn_off[i].style.display = 'none';
+            }
+        } 
+        else {
+            for (var i = 0; i < turn_off.length; i ++) {
+                turn_off[i].style.display = 'initial'
+            }
+            document.getElementById("terminal_text").innerHTML = '<br>' + 'Hello coffee!' + '<br>' + '<br>' + 'This machine is under construction.';
         }
     });
-
 });
