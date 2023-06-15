@@ -31,11 +31,11 @@ $(function(){
 
 
     // Refill resources 
-    // Coffee 
-    $("#refill_coffee").on("click", function(){
-
-        var amount = parseInt($amount_coffee.val())
-        var myJSONObject = {"coffee": amount};
+    $("#refill").on("click", function(){
+        var coffee_amount = parseInt($amount_coffee.val())
+        var water_amount = parseInt($amount_water.val())
+        var milk_amount = parseInt($amount_milk.val())
+        var myJSONObject = {"coffee": coffee_amount, "water": water_amount, "milk": milk_amount};
 
         $.ajax({
             type: 'PUT',
@@ -44,9 +44,15 @@ $(function(){
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(myJSONObject), 
             success: function(){
-                console.log("Refilled")
-                document.getElementById("terminal_text").innerHTML = 'Refilled: ' + '<br>' + '<br>' + amount + 'g of coffee.';
-                amount = 0;
+                document.getElementById("terminal_text").innerHTML = 'Refilled: ' + '<br>' + '<br>' + coffee_amount + ' g of coffee.'
+                                                                        + '<br>' + water_amount + ' ml of water.' 
+                                                                        + '<br>' + milk_amount + ' ml of milk.';
+                default_coffee = document.getElementById("amount_coffee");
+                default_water = document.getElementById("amount_water");
+                default_milk = document.getElementById("amount_milk");
+                default_coffee.value = default_coffee.defaultValue;
+                default_water.value = default_water.defaultValue;
+                default_milk.value = default_milk.defaultValue;
             },
             error: function() {
                 alert('Refill failed')
@@ -69,7 +75,7 @@ $(function(){
             for (var i = 0; i < turn_off.length; i ++) {
                 turn_off[i].style.display = 'initial'
             }
-            document.getElementById("terminal_text").innerHTML = '<br>' + 'Hello coffee!' + '<br>' + '<br>' + 'This machine is under construction.';
+            document.getElementById("terminal_text").innerHTML = '<br>' + 'Hello world!' + '<br>' + '<br>' + 'This machine is under construction.';
         }
     });
 });

@@ -89,23 +89,19 @@ async def get_money_report():
 
 @app.put("/coffee_maker/")
 async def refill_resources(data: dict):
+    # ingredient: Ingredients, amount: IngredientAmount
     """Takes ingredient and amount as user input to refill resources."""
     # coffee_maker.refill(ingredient, amount.amount)
-
     for ingr, amount in data.items():
             coffee_maker.refill(ingr, amount)
-
     return None # coffee_maker.resources[ingredient]
 
 
-# ingredient: Ingredients, amount: IngredientAmount
-
-# @app.post("/menu/recipes/")
-# async def add_recipe(menu_item: MenuItem):
-#     """Takes user input and creats a new recipe."""
-#     new_menu_item = menu_item
-#     menu.append(new_menu_item)
-#     return menu
+@app.post("/menu/recipes/")
+async def add_recipe(data: dict):
+    """Takes user input and creates or changes recipe."""
+    menu.update(data.name, data.water, data.milk, data.coffee, data.price)
+    return None
 
 
 @app.post("/money_machine/profit/")
@@ -133,7 +129,7 @@ async def update_profit():
 #         coffee_maker.report()
 #         money_machine.report()
 #     elif choice == "refill":
-#        TODO Durch coffe_maker.refill ersetzen 
+#        TODO Durch coffe_maker.refill ersetzen
 #         refill_item = input("Which ingredient would you like to refill? (water, milk, coffee): ")
 #         refill_amount = int(input("How much would you like to refill? (ml/g): "))
 #         coffee_maker.resources[refill_item] += refill_amount
