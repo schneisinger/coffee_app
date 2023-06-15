@@ -24,7 +24,7 @@
           </p>
           </div>
         <div class="col">
-            <img src="/static/images/coffe_img.png" width = "250rem" height = "250rem">
+            <img src="/static/images/coffe_img.png" width="250rem" height="250rem">
         </div>
         <div class="col" id="menu">
           <div class="ON">
@@ -62,7 +62,6 @@
                 <td>Coffee</td>
                 <td><input type="number" value="0" id="amount_coffee" maxlength="2" size="2"></td>
                 <td>g</td>
-                <!-- <td><button class="btn btn-primary refill_btn" id="refill_coffee"><i class="fa-solid fa-tablets"></i> REFILL</button></td> -->
               </tr>
               <tr>
                 <td>Water</td>
@@ -73,7 +72,6 @@
                   <td>Milk</td>
                   <td><input type="number" value="0" id="amount_milk" maxlength="3" size="2"></td>
                   <td>ml</td>
-                  <!-- <td><button class="btn btn-primary refill_btn" id="refill_milk"><i class="fa-solid fa-cow"></i> REFILL</button></td> -->
               </tr>
               <tr>
                 <td></td>
@@ -89,7 +87,7 @@
           <button type="Button" class="btn btn-lg mt-3 btn-outline-dark" id="on_off"><i class="fa-solid fa-power-off"></i></button></a>
         </div>
         <div class="ON col"> 
-            <div class="dropup-center d-grid">
+            <div class="dropup-center d-grid" id="menu_list">
               <button type="Button" class="btn btn-info dropup-toggle" data-bs-toggle="dropdown"><i class="fa-solid fa-table-list"></i> Recipes</button></a>
               <table class="table table-responsive table-sm table-hover dropdown-menu p-2">
                 <tr>
@@ -106,17 +104,16 @@
                 <td>{{item.milk}}</td>
                 <td>{{item.coffee}}</td>
                 <td>{{item.price}}</td>
-                <!-- <td><button type="Button" class="btn btn-sm btn-primary" id="add_{{item.name}}"> <i class="fa-solid fa-pen"></i></button></td> -->
                 <td><button type="Button" class="btn btn-sm btn-primary" id="delete_{{item.name}}"><i class="fa-regular fa-trash-can"></i></button></td>
               </tr>
               {% endfor %}
               <tr>
-                <td><input type="text" placeholder="Product name" id="add_recipe_name" maxlength="8" size="8"></td>
-                <td><input type="number" value="0" id="add_recipe_water" maxlength="3" size="2"></td>
-                <td><input type="number" value="0" id="add_recipe_milk" maxlength="3" size="2"></td>
-                <td><input type="number" value="0" id="add_recipe_coffee" maxlength="2" size="2"></td>
-                <td><input type="number" value="0" id="add_recipe_price" maxlength="4" size="3"></td>
-                <td><button type="submit" class="btn btn-sm btn-primary" id="add_new_recipe"><i class="fa-solid fa-pen"></i></button></td>
+                <td><input type="text" placeholder="Product name" id="edit_name" maxlength="12" size="12"></td>
+                <td><input type="number" value="0" id="edit_water" maxlength="3" size="2"></td>
+                <td><input type="number" value="0" id="edit_milk" maxlength="3" size="2"></td>
+                <td><input type="number" value="0" id="edit_coffee" maxlength="2" size="2"></td>
+                <td><input type="number" value="0" id="edit_price" maxlength="4" size="3"></td>
+                <td><button type="submit" class="btn btn-sm btn-primary" id="edit_recipe"><i class="fa-solid fa-pen"></i></button></td>
               </tr>
               </table> 
             </div>   
@@ -129,5 +126,4 @@
   </main>  
 </body>
 </html>
-
 

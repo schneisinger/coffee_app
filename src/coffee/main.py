@@ -7,12 +7,12 @@
 # import os
 from enum import Enum
 import asyncio
+from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import Template
 from pydantic import BaseModel, Field
-from pathlib import Path
 from coffee.coffee_maker import CoffeeMaker
 from coffee.money_machine import MoneyMachine
 
@@ -89,19 +89,28 @@ async def get_money_report():
 
 @app.put("/coffee_maker/")
 async def refill_resources(data: dict):
-    # ingredient: Ingredients, amount: IngredientAmount
     """Takes ingredient and amount as user input to refill resources."""
-    # coffee_maker.refill(ingredient, amount.amount)
     for ingr, amount in data.items():
             coffee_maker.refill(ingr, amount)
-    return None # coffee_maker.resources[ingredient]
+    return coffee_maker.resources
 
 
-@app.post("/menu/recipes/")
+@app.put("/menu/")
 async def add_recipe(data: dict):
-    """Takes user input and creates or changes recipe."""
-    menu.update(data.name, data.water, data.milk, data.coffee, data.price)
-    return None
+    """Takes user input and edits or creates a recipe."""
+    exists = False
+    i = 0
+    for item in menu:
+        if item["name"] == data["name"].lower():
+            item.update({"name": data["name"], "water": data["water"], "milk": data["milk"], "coffee": data["coffee"], "price": data["price"]})
+            exists = True
+            result = menu[i]
+        if not exists:
+            i += 1
+    if not exists:
+        menu.append(data)
+        result = menu[-1]
+    return result
 
 
 @app.post("/money_machine/profit/")

@@ -32,9 +32,9 @@ $(function(){
 
     // Refill resources 
     $("#refill").on("click", function(){
-        var coffee_amount = parseInt($amount_coffee.val())
-        var water_amount = parseInt($amount_water.val())
-        var milk_amount = parseInt($amount_milk.val())
+        var coffee_amount = parseInt($amount_coffee.val());
+        var water_amount = parseInt($amount_water.val());
+        var milk_amount = parseInt($amount_milk.val());
         var myJSONObject = {"coffee": coffee_amount, "water": water_amount, "milk": milk_amount};
 
         $.ajax({
@@ -60,6 +60,48 @@ $(function(){
             });
         });
 
+
+    // Edit recipes 
+    $("#edit_recipe").on("click", function(){
+        var name_edit = document.getElementById("edit_name").value;
+        var water_edit = document.getElementById("edit_water").value;
+        var milk_edit = document.getElementById("edit_milk").value;
+        var coffee_edit = document.getElementById("edit_coffee").value;
+        var price_edit = document.getElementById("edit_price").value;
+        var myJSONObject = {"name": name_edit, "water": water_edit, "milk": milk_edit, "coffee": coffee_edit, "price": price_edit};
+        
+        // if (name_edit == null || name_edit == "") {
+        //     alert("Please enter a product name and try again. ");
+        //     return false;
+        //     }
+
+        $.ajax({
+            type: 'PUT',
+            url: '/menu/', 
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(myJSONObject), 
+            success: function(){
+                console.log("Edit successfull. ")
+                document.getElementById("terminal_text").innerHTML = 'Edited: ' + '<br>' + '<br>' + name_edit + '<br>' + '(maybe) ready to brew..'; 
+
+                // document.getElementById("edit_name").value = " ";  
+                // default_coffee = document.getElementById("edit_coffee");
+                // default_water = document.getElementById("edit_water");
+                // default_milk = document.getElementById("edit_milk");
+                // default_price = document.getElementById("edit_price");
+                // default_coffee.value = default_coffee.defaultValue;
+                // default_water.value = default_water.defaultValue;
+                // default_milk.value = default_milk.defaultValue;
+                // default_price.value = default_price.defaultValue;
+
+            },
+            error: function() {
+                alert('Edit failed')
+            },
+            });
+        });
+    
     // Invert variable ON for RUNNING
     var ON = true 
 
