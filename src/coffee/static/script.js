@@ -3,6 +3,13 @@
 // console.log($("#terminal"));
 // temp1.text("testetxt"); 
 
+delete_id = ""
+
+function getID(clicked_id) {
+    delete_id = document.getElementById(clicked_id)
+    return delete_id
+}
+
 $(function(){
 
     var $amount_coffee = $('#amount_coffee');
@@ -84,7 +91,7 @@ $(function(){
             success: function(){
                 console.log("Edit successfull. ")
                 document.getElementById("terminal_text").innerHTML = 'Edited: ' + '<br>' + '<br>' + name_edit + '<br>' + '(maybe) ready to brew..'; 
-
+                //TODO raus zum Testen 
                 // document.getElementById("edit_name").value = " ";  
                 // default_coffee = document.getElementById("edit_coffee");
                 // default_water = document.getElementById("edit_water");
@@ -102,6 +109,37 @@ $(function(){
             });
         });
     
+
+    // Delete recipes 
+    $(".delete_button").on("click", function(){
+        prod_delete = delete_id.id;
+        console.log(prod_delete)
+        console.log(typeof(prod_delete))
+
+        // index = 0;
+        // for (button in (document.getElementsByTagName('html').delete_buttons)){
+        //     if (name_delete == button){
+        //         return index;}
+        //     index = index + 1;
+        //   };
+
+        $.ajax({
+            type: 'DELETE',
+            url: '/menu/', 
+            dataType: "str",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8", // 'application/json; charset=utf-8',
+            data: prod_delete, 
+            success: function(){
+                console.log("Delete successfull. ")
+                document.getElementById("terminal_text").innerHTML = 'Deleted: ' + '<br>' + '<br>' + prod_delete; 
+            },
+            error: function() {
+                alert('Delete failed')
+            },
+            });
+        });
+
+
     // Invert variable ON for RUNNING
     var ON = true 
 
