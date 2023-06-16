@@ -114,23 +114,16 @@ async def add_recipe(data: dict):
     return result
 
 
-@app.delete("/menu/")
+@app.delete("/menu/{product}")
 async def delete_recipe(product: str):
     """User deletes a recipe by a button."""
     index = 0
-    print(product)
-    print(type(product))
-
     del_product = re.search("(?<=delete_).*", product).group()
-    print(del_product)
-
     for item in menu:
         if item["name"] == del_product:
             print(item["name"])
             menu.pop(index)
         index += 1
-
-    print(menu)
     return menu
 
 

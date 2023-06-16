@@ -125,13 +125,13 @@ $(function(){
 
         $.ajax({
             type: 'DELETE',
-            url: '/menu/', 
-            dataType: "str",
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8", // 'application/json; charset=utf-8',
+            url: '/menu/' + prod_delete, 
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8', // 'application/x-www-form-urlencoded', // 'application/json; charset=utf-8',
             data: prod_delete, 
             success: function(){
                 console.log("Delete successfull. ")
-                document.getElementById("terminal_text").innerHTML = 'Deleted: ' + '<br>' + '<br>' + prod_delete; 
+                document.getElementById("terminal_text").innerHTML = 'Deleted: ' + '<br>' + '<br>' + prod_delete; // TODO prod_delete noch regexen 
             },
             error: function() {
                 alert('Delete failed')
