@@ -113,16 +113,7 @@ $(function(){
     // Delete recipes 
     $(".delete_button").on("click", function(){
         prod_delete = delete_id.id;
-        console.log(prod_delete)
-        console.log(typeof(prod_delete))
-
-        // index = 0;
-        // for (button in (document.getElementsByTagName('html').delete_buttons)){
-        //     if (name_delete == button){
-        //         return index;}
-        //     index = index + 1;
-        //   };
-
+        
         $.ajax({
             type: 'DELETE',
             url: '/menu/' + prod_delete, 
