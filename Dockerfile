@@ -13,12 +13,13 @@ WORKDIR /workdir
 RUN mkdir -p __pypackages__ && pdm sync --prod --no-editable
 
 # run stage 
-FROM python:3.10
+FROM python:3.10-alpine
 
 # retrieve packages from build stage
 EXPOSE 8000
 
-RUN mkdir -p /workdir/__pypackages__
+RUN mkdir -p /workdir/__pypackages__ 
+RUN apk add curl
 
 COPY --from=builder /workdir/__pypackages__/3.10/lib /workdir/__pypackages__/lib
 COPY --from=builder /workdir/__pypackages__/3.10/bin /workdir/__pypackages__/bin
