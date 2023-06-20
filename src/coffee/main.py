@@ -9,7 +9,7 @@ import re
 from enum import Enum
 import asyncio
 from pathlib import Path
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request,HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import Template
@@ -51,6 +51,7 @@ class MenuItem():
         Ingredients.MILK: IngredientAmount,
         Ingredients.COFFEE: IngredientAmount
     }
+
 
 menu = [
     {"name":"latte", "water": 200, "milk": 150, "coffee": 24, "price": 2.5},
@@ -94,6 +95,28 @@ async def refill_resources(data: dict):
     for ingr, amount in data.items():
             coffee_maker.refill(ingr, amount)
     return coffee_maker.resources
+
+
+@app.put("/coffee_maker/{order}")
+async def brew_product(order: str):
+    """Takes order from user and brews product if resources sufficient."""
+    product = re.search("(?<=brew_).*", order).group()
+
+    choice = ""
+    for drink in menu:
+        if drink["name"] == product:
+            choice = drink["name"]
+    
+    if coffee_maker.is_resource_sufficient(choice, menu):
+        coffee_maker.make_coffee(choice, menu)
+        print(f"Success: {choice}")
+    else: 
+         raise HTTPException(
+            status_code=444,
+            detail="Resources insufficient",
+            headers={"X-Error": "Resources insufficient"},
+        )
+    return None
 
 
 @app.put("/menu/")

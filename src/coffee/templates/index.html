@@ -39,7 +39,7 @@
                 <td>{{item.name.capitalize()}}</td>
                 <td>{{item.price}}</td>
                 <td>Euro</td>
-                <td><button type="Button" class="btn btn-primary" id="brew_{{item.name}}"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
+                <td><button type="Button" class="btn btn-primary brew_button" id="brew_{{item.name}}" onClick="getBREW(this.id)"><i class="fa-solid fa-mug-hot"></i> BREW</button></td>
               </tr>
               {% endfor %}
             </table>

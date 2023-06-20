@@ -10,6 +10,14 @@ function getID(clicked_id) {
     return delete_id
 }
 
+
+brew_id = ""
+
+function getBREW(clicked_id) {
+    brew_id = document.getElementById(clicked_id)
+    return brew_id
+}
+
 $(function(){
 
     var $amount_coffee = $('#amount_coffee');
@@ -82,33 +90,53 @@ $(function(){
         //     return false;
         //     }
 
+    $.ajax({
+        type: 'PUT',
+        url: '/menu/', 
+        dataType: "json",
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(myJSONObject), 
+        success: function(){
+            console.log("Edit successfull. ")
+            document.getElementById("terminal_text").innerHTML = 'Edited: ' + '<br>' + '<br>' + name_edit + '<br>' + '(maybe) ready to brew..'; 
+            //TODO raus zum Testen 
+            // document.getElementById("edit_name").value = " ";  
+            // default_coffee = document.getElementById("edit_coffee");
+            // default_water = document.getElementById("edit_water");
+            // default_milk = document.getElementById("edit_milk");
+            // default_price = document.getElementById("edit_price");
+            // default_coffee.value = default_coffee.defaultValue;
+            // default_water.value = default_water.defaultValue;
+            // default_milk.value = default_milk.defaultValue;
+            // default_price.value = default_price.defaultValue;
+
+        },
+        error: function() {
+            alert('Edit failed')
+        },
+        });
+    });
+    
+        
+     // Brew drink 
+    $(".brew_button").on("click", function(){
+        prod_brew = brew_id.id;
+  
         $.ajax({
             type: 'PUT',
-            url: '/menu/', 
+            url: '/coffee_maker/' + prod_brew, 
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(myJSONObject), 
+            data: prod_brew, 
             success: function(){
-                console.log("Edit successfull. ")
-                document.getElementById("terminal_text").innerHTML = 'Edited: ' + '<br>' + '<br>' + name_edit + '<br>' + '(maybe) ready to brew..'; 
-                //TODO raus zum Testen 
-                // document.getElementById("edit_name").value = " ";  
-                // default_coffee = document.getElementById("edit_coffee");
-                // default_water = document.getElementById("edit_water");
-                // default_milk = document.getElementById("edit_milk");
-                // default_price = document.getElementById("edit_price");
-                // default_coffee.value = default_coffee.defaultValue;
-                // default_water.value = default_water.defaultValue;
-                // default_milk.value = default_milk.defaultValue;
-                // default_price.value = default_price.defaultValue;
-
+                console.log("Brew successfull. ")
+                document.getElementById("terminal_text").innerHTML = 'Brewed: ' + '<br>' + '<br>' + prod_brew + '<br>' + '<br>' + '☕️ enjoy.'; // TODO prod_brew noch regexen 
             },
             error: function() {
-                alert('Edit failed')
+                alert('Brew failed - please check & refill resources.')
             },
             });
-        });
-    
+        });   
 
     // Delete recipes 
     $(".delete_button").on("click", function(){
@@ -118,7 +146,7 @@ $(function(){
             type: 'DELETE',
             url: '/menu/' + prod_delete, 
             dataType: "json",
-            contentType: 'application/json; charset=utf-8', // 'application/x-www-form-urlencoded', // 'application/json; charset=utf-8',
+            contentType: 'application/json; charset=utf-8', 
             data: prod_delete, 
             success: function(){
                 console.log("Delete successfull. ")

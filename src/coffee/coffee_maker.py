@@ -14,20 +14,47 @@ class CoffeeMaker:
         print(f"Milk: {self.resources['milk']}ml")
         print(f"Coffee: {self.resources['coffee']}g")
 
-    def is_resource_sufficient(self, drink):
+
+    def is_resource_sufficient(self, order, menu):
         """Returns True when order can be made, False if ingredients are insufficient."""
         can_make = True
-        for item in drink.ingredients:
-            if drink.ingredients[item] > self.resources[item]:
-                print(f"Sorry there is not enough {item}.")
-                can_make = False
-        return can_make
+        for item in menu:
+            if order == item["name"]:
+                if self.resources["water"] < item["water"]:
+                    can_make = False
+                elif self.resources["milk"] < item["milk"]:
+                    can_make = False
+                elif self.resources["coffee"] < item["coffee"]:
+                    can_make = False
+                else: 
+                    return can_make
 
-    def make_coffee(self, order):
+
+    def make_coffee(self, order, menu):
         """Deducts the required ingredients from the resources."""
-        for item in order.ingredients:
-            self.resources[item] -= order.ingredients[item]
-        print(f"Here is your {order.name} ☕️. Enjoy!")
+        for item in menu:
+            if order == item["name"]:
+                self.resources["water"] -= item["water"]
+                self.resources["milk"] -= item["milk"]
+                self.resources["coffee"] -= item["coffee"]
+                # print(f"Here is your {item['name']} ☕️. Enjoy!")
+
+    # alt
+    # def is_resource_sufficient(self, drink):
+    # """Returns True when order can be made, False if ingredients are insufficient."""
+    # can_make = True
+    # for item in drink.ingredients:
+    #     if drink.ingredients[item] > self.resources[item]:
+    #         print(f"Sorry there is not enough {item}.")
+    #         can_make = False
+    # return can_make
+    
+    # def make_coffee(self, order):
+    #     """Deducts the required ingredients from the resources."""
+    #     for item in order.ingredients:
+    #         self.resources[item] -= order.ingredients[item]
+    #     print(f"Here is your {order.name} ☕️. Enjoy!")
+
 
     def refill(self, item, amount):
         """Takes item & amount as user input and adds to resources."""
