@@ -115,6 +115,13 @@ $(function(){
             alert('Edit failed')
         },
         });
+
+        // TODO 
+        location.reload();
+        // var table = document.getElementById("menu_items");
+        // table.reload()
+        // $("#menu_items").load("index.html");
+
     });
     
         
@@ -156,6 +163,9 @@ $(function(){
                 alert('Delete failed')
             },
             });
+        
+        // TODO refresh table 
+        location.reload();
         });
 
 
