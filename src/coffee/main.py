@@ -34,7 +34,7 @@ class Ingredients(str, Enum):
 class IngredientAmount(BaseModel):
     amount: int = Field(100, gt=0, lt=9999)
     
-class IngredientPrice(BaseModel):    
+class IngredientPrice(BaseModel):
     cost: float = Field(2.5, gt=0, lt=10)
 
 class Recipe(BaseModel):
@@ -106,12 +106,11 @@ async def brew_product(order: str):
     for drink in menu:
         if drink["name"] == product:
             choice = drink["name"]
-    
     if coffee_maker.is_resource_sufficient(choice, menu):
         coffee_maker.make_coffee(choice, menu)
         print(f"Success: {choice}")
-    else: 
-         raise HTTPException(
+    else:
+        raise HTTPException(
             status_code=444,
             detail="Resources insufficient",
             headers={"X-Error": "Resources insufficient"},
