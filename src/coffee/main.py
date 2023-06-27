@@ -13,6 +13,7 @@ from fastapi import FastAPI, Request,HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import Template
+import psycopg2
 from pydantic import BaseModel, Field
 from coffee.coffee_maker import CoffeeMaker
 from coffee.money_machine import MoneyMachine
@@ -53,13 +54,32 @@ class MenuItem():
     }
 
 
-menu = [
-    {"name":"latte", "water": 200, "milk": 150, "coffee": 24, "price": 2.5},
-    {"name":"espresso", "water": 50, "milk": 0, "coffee": 18, "price": 1.5},
-    {"name":"americano", "water": 125, "milk": 0, "coffee": 36, "price": 2.25},
-    {"name":"cappuccino", "water": 75, "milk": 100, "coffee": 24, "price": 3.75},
-    ]
+# 23 06 27 - moved to DB=postgreSQL
+# menu = [
+#     {"name":"latte", "water": 200, "milk": 150, "coffee": 24, "price": 2.5},
+#     {"name":"espresso", "water": 50, "milk": 0, "coffee": 18, "price": 1.5},
+#     {"name":"americano", "water": 125, "milk": 0, "coffee": 36, "price": 2.25},
+#     {"name":"cappuccino", "water": 75, "milk": 100, "coffee": 24, "price": 3.75},
+#     ]
 
+# Vorübergehend credentials für DB
+hostname = 'localhost'
+database = 'coffee_app'
+username = 'postgres'
+passwd = 'asdf'
+port_id = '5432'
+# Connect to postgres-DB
+conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+# Open cursor to perform operations
+cur = conn.cursor()
+
+# Test pgSQL
+#cur.execute("INSERT INTO coffee_menu(name,water,milk,coffee,price) VALUES(lungo,75,0,18,1.75)")
+cur.execute("SELECT * FROM coffee_menu")
+# Get data from query result
+menu = cur.fetchall()
+
+print(menu)
 
 # FastAPI:
 app = FastAPI()
@@ -155,6 +175,10 @@ async def update_profit():
     money_machine.profit += 1           ## TODO nur Test!
     profit = money_machine.profit
     return profit
+
+
+conn.close()
+
 
 # ___________________________________________________________
 
