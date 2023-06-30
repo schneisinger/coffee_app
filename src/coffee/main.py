@@ -14,6 +14,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from jinja2 import Template
 import psycopg2
+import psycopg2.extras
 from pydantic import BaseModel, Field
 from coffee.coffee_maker import CoffeeMaker
 from coffee.money_machine import MoneyMachine
@@ -71,15 +72,15 @@ port_id = '5432'
 # Connect to postgres-DB
 conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
 # Open cursor to perform operations
-cur = conn.cursor()
+cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 # Test pgSQL
 #cur.execute("INSERT INTO coffee_menu(name,water,milk,coffee,price) VALUES(lungo,75,0,18,1.75)")
 cur.execute("SELECT * FROM coffee_menu")
 # Get data from query result
 menu = cur.fetchall()
+cur.close()
 
-print(menu)
 
 # FastAPI:
 app = FastAPI()
@@ -128,7 +129,7 @@ async def brew_product(order: str):
             choice = drink["name"]
     if coffee_maker.is_resource_sufficient(choice, menu):
         coffee_maker.make_coffee(choice, menu)
-        print(f"Success: {choice}")
+        #print(f"Success: {choice}")
     else:
         raise HTTPException(
             status_code=444,
@@ -140,20 +141,77 @@ async def brew_product(order: str):
 
 @app.put("/menu/")
 async def add_recipe(data: dict):
-    """Takes user input and edits or creates a recipe."""
+    """Takes user input and edits an existing or creates a new recipe."""
+
+    conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+
+    # cur.execute("SELECT name FROM coffee_menu")
+    # products = cur.fetchall()
+
+    # print(products)
+    # for item in products:
+    #     print(f"Item: {item} and Type: {type(item)}")
+
+    print(data["name"])
+
     exists = False
-    i = 0
     for item in menu:
         if item["name"] == data["name"].lower():
-            item.update({"name": data["name"], "water": data["water"], "milk": data["milk"], "coffee": data["coffee"], "price": data["price"]})
             exists = True
-            result = menu[i]
-        if not exists:
-            i += 1
-    if not exists:
-        menu.append(data)
-        result = menu[-1]
-    return result
+
+    if exists:
+        print("DOES EXIST")
+        cur.execute("""
+            UPDATE coffee_menu
+            SET water = %(water)s, milk = %(milk)s, coffee = %(coffee)s, price = %(price)s
+            WHERE name = %(name)s;
+            """,
+            {'name': data["name"], 'water': data["water"], 'milk': data["milk"], 'coffee': data["coffee"], 'price': data["price"]}
+            )
+    else:
+        print("DOES NOT EXIST")
+        cur.execute("""
+        INSERT INTO coffee_menu (name, water, milk, coffee, price)
+        VALUES (%(name)s, %(water)s, %(milk)s, %(coffee)s, %(price)s);                
+        """,
+        {'name': data["name"], 'water': data["water"], 'milk': data["milk"], 'coffee': data["coffee"], 'price': data["price"]}
+        )
+
+    # if data["name"].lower() in products:
+    #     print("This is: IF")
+    #     cur.execute("""
+    #             UPDATE coffee_menu
+    #             SET water = %(water)s, milk = %(milk)s, coffee = %(coffee)s, price = %(price)s
+    #             WHERE name = %(name)s;
+    #             """,
+    #             {'name': data["name"], 'water': data["water"], 'milk': data["milk"], 'coffee': data["coffee"], 'price': data["price"]}
+    #             )
+    # else:
+    #     print("This is: ELSE")
+    #     cur.execute("""
+    #             INSERT INTO coffee_menu (name, water, milk, coffee, price)
+    #             VALUES (%(name)s, %(water)s, %(milk)s, %(coffee)s, %(price)s);         
+    #             """,
+    #             {'name': data["name"], 'water': data["water"], 'milk': data["milk"], 'coffee': data["coffee"], 'price': data["price"]}
+    #             )
+
+    # exists = False
+    # i = 0
+    # for item in menu:
+    #     if item["name"] == data["name"].lower():
+    #         item.update({"name": data["name"], "water": data["water"], "milk": data["milk"], "coffee": data["coffee"], "price": data["price"]})
+    #         exists = True
+    #         result = menu[i]
+    #     if not exists:
+    #         i += 1
+    # if not exists:
+    #     menu.append(data)
+    #     result = menu[-1]
+
+    cur.close()
+    conn.close()
+    return None
 
 
 @app.delete("/menu/{product}")
@@ -177,8 +235,8 @@ async def update_profit():
     return profit
 
 
-conn.close()
 
+conn.close()
 
 # ___________________________________________________________
 

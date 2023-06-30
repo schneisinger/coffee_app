@@ -20,13 +20,13 @@ class CoffeeMaker:
         can_make = True
         for item in menu:
             if order == item["name"]:
-                if self.resources["water"] < item["water"]:
+                if self.resources["water"] < int(item["water"]):
                     can_make = False
-                elif self.resources["milk"] < item["milk"]:
+                elif self.resources["milk"] < int(item["milk"]):
                     can_make = False
-                elif self.resources["coffee"] < item["coffee"]:
+                elif self.resources["coffee"] < int(item["coffee"]):
                     can_make = False
-                else: 
+                else:
                     return can_make
 
 
@@ -34,9 +34,9 @@ class CoffeeMaker:
         """Deducts the required ingredients from the resources."""
         for item in menu:
             if order == item["name"]:
-                self.resources["water"] -= item["water"]
-                self.resources["milk"] -= item["milk"]
-                self.resources["coffee"] -= item["coffee"]
+                self.resources["water"] -= int(item["water"])
+                self.resources["milk"] -= int(item["milk"])
+                self.resources["coffee"] -= int(item["coffee"])
                 # print(f"Here is your {item['name']} ☕️. Enjoy!")
 
     # alt
