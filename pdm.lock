@@ -258,7 +258,7 @@ summary = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
 lock_version = "4.2"
 cross_platform = true
 groups = ["default"]
-content_hash = "sha256:4c812acfb4fbe9c3a886248d29d14501c6a2bf4673a793c0ee8578fdc17d1e8d"
+content_hash = "sha256:fa527c7bebf2ad23f63eeb7966c7b5ec12f172df8e0a8c4f193755cd5ab69ae9"
 
 [metadata.files]
 "anyio 3.6.2" = [

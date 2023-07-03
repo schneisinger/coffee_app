@@ -1,4 +1,17 @@
 services: 
+  db: 
+   image: postgres:15.3
+   restart: always
+   hostname: pgdb  
+   environment:
+     POSTGRES_PASSWORD: asdf
+   networks: 
+     - coffee_net
+   ports: 
+     - "5432:5432"
+   volumes:
+     - db:/var/lib/postgresql/data
+
   web: 
     build: .
     ports: 
@@ -9,7 +22,9 @@ services:
       timeout: 10s
       retries: 3
       start_period: 15s
-  
+    networks:          
+      - coffee_net
+
   admin: 
     image: dpage/pgadmin4:7.3
     ports:  
@@ -17,17 +32,12 @@ services:
     environment:  
       PGADMIN_DEFAULT_EMAIL: dm@example.com 
       PGADMIN_DEFAULT_PASSWORD: asdf
-
-  db: 
-    image: postgres:15.3
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: asdf
-    ports: 
-      - "5432:5432"
-    volumes:
-      - db:/var/lib/postgresql/data
+    networks: 
+      - coffee_net
 
 volumes:
   db: 
 
+networks: 
+  coffee_net: 
+    name: coffee_network

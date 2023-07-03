@@ -64,22 +64,19 @@ class MenuItem():
 #     ]
 
 # Vorübergehend credentials für DB
-hostname = 'localhost'
+hostname = 'pgdb'
 database = 'coffee_app'
 username = 'postgres'
 passwd = 'asdf'
 port_id = '5432'
 # Connect to postgres-DB
-conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
-# Open cursor to perform operations
-cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
-# Test pgSQL
-#cur.execute("INSERT INTO coffee_menu(name,water,milk,coffee,price) VALUES(lungo,75,0,18,1.75)")
-cur.execute("SELECT * FROM coffee_menu")
-# Get data from query result
-menu = cur.fetchall()
-cur.close()
+# conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+# # Open cursor to perform operations
+# cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+# cur.execute("SELECT * FROM coffee_menu")
+# # Get data from query result
+# menu = cur.fetchall()
+# cur.close()
 
 
 # FastAPI:
@@ -93,6 +90,12 @@ templates = Jinja2Templates(directory=str(BASE_PATH / "templates"))
 
 @app.get("/")
 async def read_root(request: Request):
+    conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cur.execute("SELECT * FROM coffee_menu")
+    menu = cur.fetchall()
+    cur.close()
+    conn.close()
     return templates.TemplateResponse("index.html", {"request": request, "menu": menu})
 
 
@@ -121,6 +124,12 @@ async def refill_resources(data: dict):
 @app.put("/coffee_maker/{order}")
 async def brew_product(order: str):
     """Takes order from user and brews product if resources sufficient."""
+
+    conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cur.execute("SELECT * FROM coffee_menu")
+    menu = cur.fetchall()
+
     product = re.search("(?<=brew_).*", order).group()
 
     choice = ""
@@ -135,23 +144,19 @@ async def brew_product(order: str):
             status_code=444,
             detail="Resources insufficient",
             headers={"X-Error": "Resources insufficient"},
-        )
+        )   
+    cur.close()
+    conn.close()
     return None
 
 
 @app.put("/menu/")
 async def add_recipe(data: dict):
     """Takes user input and edits an existing or creates a new recipe."""
-
     conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
-    # cur.execute("SELECT name FROM coffee_menu")
-    # products = cur.fetchall()
-
-    # print(products)
-    # for item in products:
-    #     print(f"Item: {item} and Type: {type(item)}")
+    cur.execute("SELECT * FROM coffee_menu")
+    menu = cur.fetchall()
 
     print(data["name"])
 
@@ -161,7 +166,7 @@ async def add_recipe(data: dict):
             exists = True
 
     if exists:
-        print("DOES EXIST")
+        print("DOES EXIST") #TODO nur Test
         cur.execute("""
             UPDATE coffee_menu
             SET water = %(water)s, milk = %(milk)s, coffee = %(coffee)s, price = %(price)s
@@ -170,31 +175,13 @@ async def add_recipe(data: dict):
             {'name': data["name"], 'water': data["water"], 'milk': data["milk"], 'coffee': data["coffee"], 'price': data["price"]}
             )
     else:
-        print("DOES NOT EXIST")
+        print("DOES NOT EXIST") #TODO nur Test
         cur.execute("""
         INSERT INTO coffee_menu (name, water, milk, coffee, price)
         VALUES (%(name)s, %(water)s, %(milk)s, %(coffee)s, %(price)s);                
         """,
         {'name': data["name"], 'water': data["water"], 'milk': data["milk"], 'coffee': data["coffee"], 'price': data["price"]}
         )
-
-    # if data["name"].lower() in products:
-    #     print("This is: IF")
-    #     cur.execute("""
-    #             UPDATE coffee_menu
-    #             SET water = %(water)s, milk = %(milk)s, coffee = %(coffee)s, price = %(price)s
-    #             WHERE name = %(name)s;
-    #             """,
-    #             {'name': data["name"], 'water': data["water"], 'milk': data["milk"], 'coffee': data["coffee"], 'price': data["price"]}
-    #             )
-    # else:
-    #     print("This is: ELSE")
-    #     cur.execute("""
-    #             INSERT INTO coffee_menu (name, water, milk, coffee, price)
-    #             VALUES (%(name)s, %(water)s, %(milk)s, %(coffee)s, %(price)s);         
-    #             """,
-    #             {'name': data["name"], 'water': data["water"], 'milk': data["milk"], 'coffee': data["coffee"], 'price': data["price"]}
-    #             )
 
     # exists = False
     # i = 0
@@ -217,6 +204,11 @@ async def add_recipe(data: dict):
 @app.delete("/menu/{product}")
 async def delete_recipe(product: str):
     """User deletes a recipe by a button."""
+    conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cur.execute("SELECT * FROM coffee_menu")
+    menu = cur.fetchall()
+
     index = 0
     del_product = re.search("(?<=delete_).*", product).group()
     for item in menu:
@@ -224,6 +216,9 @@ async def delete_recipe(product: str):
             print(item["name"])
             menu.pop(index)
         index += 1
+
+    cur.close()
+    conn.close()   
     return menu
 
 
@@ -236,7 +231,7 @@ async def update_profit():
 
 
 
-conn.close()
+# conn.close()
 
 # ___________________________________________________________
 
