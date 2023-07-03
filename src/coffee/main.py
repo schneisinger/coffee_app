@@ -91,6 +91,7 @@ templates = Jinja2Templates(directory=str(BASE_PATH / "templates"))
 @app.get("/")
 async def read_root(request: Request):
     conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+    conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM coffee_menu")
     menu = cur.fetchall()
@@ -117,7 +118,7 @@ async def get_money_report():
 async def refill_resources(data: dict):
     """Takes ingredient and amount as user input to refill resources."""
     for ingr, amount in data.items():
-            coffee_maker.refill(ingr, amount)
+        coffee_maker.refill(ingr, amount)
     return coffee_maker.resources
 
 
@@ -126,6 +127,7 @@ async def brew_product(order: str):
     """Takes order from user and brews product if resources sufficient."""
 
     conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+    conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM coffee_menu")
     menu = cur.fetchall()
@@ -136,15 +138,17 @@ async def brew_product(order: str):
     for drink in menu:
         if drink["name"] == product:
             choice = drink["name"]
+            price = drink["price"]
     if coffee_maker.is_resource_sufficient(choice, menu):
         coffee_maker.make_coffee(choice, menu)
+        money_machine.profit += price
         #print(f"Success: {choice}")
     else:
         raise HTTPException(
             status_code=444,
             detail="Resources insufficient",
             headers={"X-Error": "Resources insufficient"},
-        )   
+        )
     cur.close()
     conn.close()
     return None
@@ -154,6 +158,7 @@ async def brew_product(order: str):
 async def add_recipe(data: dict):
     """Takes user input and edits an existing or creates a new recipe."""
     conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+    conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM coffee_menu")
     menu = cur.fetchall()
@@ -174,28 +179,15 @@ async def add_recipe(data: dict):
             """,
             {'name': data["name"], 'water': data["water"], 'milk': data["milk"], 'coffee': data["coffee"], 'price': data["price"]}
             )
+        conn.commit()
     else:
-        print("DOES NOT EXIST") #TODO nur Test
+        print("DOES NOT EXIST")
         cur.execute("""
         INSERT INTO coffee_menu (name, water, milk, coffee, price)
         VALUES (%(name)s, %(water)s, %(milk)s, %(coffee)s, %(price)s);                
         """,
         {'name': data["name"], 'water': data["water"], 'milk': data["milk"], 'coffee': data["coffee"], 'price': data["price"]}
         )
-
-    # exists = False
-    # i = 0
-    # for item in menu:
-    #     if item["name"] == data["name"].lower():
-    #         item.update({"name": data["name"], "water": data["water"], "milk": data["milk"], "coffee": data["coffee"], "price": data["price"]})
-    #         exists = True
-    #         result = menu[i]
-    #     if not exists:
-    #         i += 1
-    # if not exists:
-    #     menu.append(data)
-    #     result = menu[-1]
-
     cur.close()
     conn.close()
     return None
@@ -205,20 +197,22 @@ async def add_recipe(data: dict):
 async def delete_recipe(product: str):
     """User deletes a recipe by a button."""
     conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+    conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM coffee_menu")
     menu = cur.fetchall()
 
-    index = 0
     del_product = re.search("(?<=delete_).*", product).group()
-    for item in menu:
-        if item["name"] == del_product:
-            print(item["name"])
-            menu.pop(index)
-        index += 1
 
+    cur.execute(
+        """
+        DELETE FROM coffee_menu
+        WHERE name = %(name)s;
+        """,
+        {'name': del_product}
+    )
     cur.close()
-    conn.close()   
+    conn.close()
     return menu
 
 

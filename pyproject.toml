@@ -20,7 +20,7 @@ requires-python = ">=3.10"
 license = {text = "MIT"}
 
 [tool.pdm.scripts]
-start = "uvicorn coffee.main:app --host=0.0.0.0 --reload"
+start = "uvicorn coffee.main:app --host=0.0.0.0"
 
 [tool.pdm.build]
 includes = ["src", "src/static/*", "src/templates/*"]
