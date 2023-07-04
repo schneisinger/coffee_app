@@ -1,7 +1,7 @@
 
 // Objekt in Browserkonsole
 // console.log($("#terminal"));
-// temp1.text("testetxt"); 
+// temp1.text("testetxt");
 
 delete_id = ""
 
@@ -30,12 +30,12 @@ $(function(){
             url: "/coffee_maker/",
         }).done(function(report_data) {
             // console.log(report_data)
-            document.getElementById("terminal_text").innerHTML = 'Current resources available: ' + '<br>' + '<br>' + 'Water: ' + report_data.water + ' ml' + '<br>' + 'Milk: ' + report_data.milk + ' ml' + '<br>' + 'Coffee: ' + report_data.coffee + ' g'; 
+            document.getElementById("terminal_text").innerHTML = 'Current resources available: ' + '<br>' + '<br>' + 'Water: ' + report_data.water + ' ml' + '<br>' + 'Milk: ' + report_data.milk + ' ml' + '<br>' + 'Coffee: ' + report_data.coffee + ' g';
         });
     });
 
 
-    // GET report of current profit 
+    // GET report of current profit
     $("#profit_report").on("click", function(){
         $.ajax({
             url: "/money_machine/",
@@ -45,7 +45,7 @@ $(function(){
     });
 
 
-    // Refill resources 
+    // Refill resources
     $("#refill").on("click", function(){
         var coffee_amount = parseInt($amount_coffee.val());
         var water_amount = parseInt($amount_water.val());
@@ -54,13 +54,13 @@ $(function(){
 
         $.ajax({
             type: 'PUT',
-            url: '/coffee_maker/', 
+            url: '/coffee_maker/',
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify(myJSONObject), 
+            data: JSON.stringify(myJSONObject),
             success: function(){
                 document.getElementById("terminal_text").innerHTML = 'Refilled: ' + '<br>' + '<br>' + coffee_amount + ' g of coffee.'
-                                                                        + '<br>' + water_amount + ' ml of water.' 
+                                                                        + '<br>' + water_amount + ' ml of water.'
                                                                         + '<br>' + milk_amount + ' ml of milk.';
                 default_coffee = document.getElementById("amount_coffee");
                 default_water = document.getElementById("amount_water");
@@ -76,7 +76,7 @@ $(function(){
         });
 
 
-    // Edit recipes 
+    // Edit recipes
     $("#edit_recipe").on("click", function(){
         var name_edit = document.getElementById("edit_name").value;
         var water_edit = document.getElementById("edit_water").value;
@@ -84,7 +84,7 @@ $(function(){
         var coffee_edit = document.getElementById("edit_coffee").value;
         var price_edit = document.getElementById("edit_price").value;
         var myJSONObject = {"name": name_edit, "water": water_edit, "milk": milk_edit, "coffee": coffee_edit, "price": price_edit};
-        
+
         // if (name_edit == null || name_edit == "") {
         //     alert("Please enter a product name and try again. ");
         //     return false;
@@ -92,15 +92,15 @@ $(function(){
 
     $.ajax({
         type: 'PUT',
-        url: '/menu/', 
+        url: '/menu/',
         dataType: "json",
         contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(myJSONObject), 
+        data: JSON.stringify(myJSONObject),
         success: function(){
             console.log("Edit successfull. ")
-            document.getElementById("terminal_text").innerHTML = 'Edited: ' + '<br>' + '<br>' + name_edit + '<br>' + '(maybe) ready to brew..'; 
-            //TODO raus zum Testen 
-            // document.getElementById("edit_name").value = " ";  
+            document.getElementById("terminal_text").innerHTML = 'Edited: ' + '<br>' + '<br>' + name_edit + '<br>' + '(maybe) ready to brew..';
+            //TODO raus zum Testen
+            // document.getElementById("edit_name").value = " ";
             // default_coffee = document.getElementById("edit_coffee");
             // default_water = document.getElementById("edit_water");
             // default_milk = document.getElementById("edit_milk");
@@ -116,61 +116,59 @@ $(function(){
         },
         });
 
-        // TODO 
         location.reload();
         // var table = document.getElementById("menu_items");
         // table.reload()
         // $("#menu_items").load("index.html");
 
     });
-    
-        
-     // Brew drink 
+
+
+     // Brew drink
     $(".brew_button").on("click", function(){
         prod_brew = brew_id.id;
-  
+
         $.ajax({
             type: 'PUT',
-            url: '/coffee_maker/' + prod_brew, 
+            url: '/coffee_maker/' + prod_brew,
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
-            data: prod_brew, 
+            data: prod_brew,
             success: function(){
                 console.log("Brew successfull. ")
-                document.getElementById("terminal_text").innerHTML = 'Brewed: ' + '<br>' + '<br>' + prod_brew + '<br>' + '<br>' + '☕️ enjoy.'; // TODO prod_brew noch regexen 
+                document.getElementById("terminal_text").innerHTML = 'Brewed: ' + '<br>' + '<br>' + prod_brew + '<br>' + '<br>' + '☕️ enjoy.'; // TODO prod_brew noch regexen
             },
             error: function() {
                 alert('Brew failed - please check & refill resources.')
             },
             });
-        });   
+        });
 
-    // Delete recipes 
+    // Delete recipes
     $(".delete_button").on("click", function(){
         prod_delete = delete_id.id;
-        
+
         $.ajax({
             type: 'DELETE',
-            url: '/menu/' + prod_delete, 
+            url: '/menu/' + prod_delete,
             dataType: "json",
-            contentType: 'application/json; charset=utf-8', 
-            data: prod_delete, 
+            contentType: 'application/json; charset=utf-8',
+            data: prod_delete,
             success: function(){
                 console.log("Delete successfull. ")
-                document.getElementById("terminal_text").innerHTML = 'Deleted: ' + '<br>' + '<br>' + prod_delete; // TODO prod_delete noch regexen 
+                document.getElementById("terminal_text").innerHTML = 'Deleted: ' + '<br>' + '<br>' + prod_delete; // TODO prod_delete noch regexen
             },
             error: function() {
                 alert('Delete failed')
             },
             });
-        
-        // TODO refresh table 
+
         location.reload();
         });
 
 
     // Invert variable ON for RUNNING
-    var ON = true 
+    var ON = true
 
     $("#on_off").on("click", function(){
         ON = !ON
@@ -179,7 +177,7 @@ $(function(){
             for (var i = 0; i < turn_off.length; i ++) {
                 turn_off[i].style.display = 'none';
             }
-        } 
+        }
         else {
             for (var i = 0; i < turn_off.length; i ++) {
                 turn_off[i].style.display = 'initial'

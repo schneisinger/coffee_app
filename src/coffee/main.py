@@ -2,6 +2,7 @@
 # pylint: disable=no-self-argument
 # pylint: disable=missing-function-docstring
 # pylint: disable=missing-class-docstring
+# pylint: disable=line-too-long
 
 """Doc string for modules"""
 # import os
@@ -35,7 +36,7 @@ class Ingredients(str, Enum):
 
 class IngredientAmount(BaseModel):
     amount: int = Field(100, gt=0, lt=9999)
-    
+
 class IngredientPrice(BaseModel):
     cost: float = Field(2.5, gt=0, lt=10)
 
@@ -69,14 +70,25 @@ database = 'coffee_app'
 username = 'postgres'
 passwd = 'asdf'
 port_id = '5432'
-# Connect to postgres-DB
-# conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
-# # Open cursor to perform operations
-# cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-# cur.execute("SELECT * FROM coffee_menu")
-# # Get data from query result
-# menu = cur.fetchall()
-# cur.close()
+
+
+# Initialize DB -> # TODO default values?
+conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+cur.execute("CREATE DATABASE [IF NOT EXISTS] coffee_app;")
+cur.execute("""
+        CREATE TABLE [IF NOT EXISTS] coffee_menu(
+        id SERIAL PRIMARY KEY,
+        name text NOT NULL,
+        water numeric,
+        milk numeric,
+        coffee numeric,
+        price numeric NOT NULL
+        );
+        """)
+conn.commit()
+cur.close()
+conn.close()
 
 
 # FastAPI:
@@ -163,28 +175,24 @@ async def add_recipe(data: dict):
     cur.execute("SELECT * FROM coffee_menu")
     menu = cur.fetchall()
 
-    print(data["name"])
-
     exists = False
     for item in menu:
         if item["name"] == data["name"].lower():
             exists = True
 
     if exists:
-        print("DOES EXIST") #TODO nur Test
         cur.execute("""
             UPDATE coffee_menu
-            SET water = %(water)s, milk = %(milk)s, coffee = %(coffee)s, price = %(price)s
-            WHERE name = %(name)s;
+            SET water=%(water)s, milk=%(milk)s, coffee=%(coffee)s, price=%(price)s
+            WHERE name=%(name)s;
             """,
             {'name': data["name"], 'water': data["water"], 'milk': data["milk"], 'coffee': data["coffee"], 'price': data["price"]}
             )
         conn.commit()
     else:
-        print("DOES NOT EXIST")
         cur.execute("""
         INSERT INTO coffee_menu (name, water, milk, coffee, price)
-        VALUES (%(name)s, %(water)s, %(milk)s, %(coffee)s, %(price)s);                
+        VALUES (%(name)s, %(water)s, %(milk)s, %(coffee)s, %(price)s);
         """,
         {'name': data["name"], 'water': data["water"], 'milk': data["milk"], 'coffee': data["coffee"], 'price': data["price"]}
         )
@@ -216,15 +224,6 @@ async def delete_recipe(product: str):
     return menu
 
 
-@app.post("/money_machine/profit/")
-async def update_profit():
-    """Sends the current profit to the client."""
-    money_machine.profit += 1           ## TODO nur Test!
-    profit = money_machine.profit
-    return profit
-
-
-
 # conn.close()
 
 # ___________________________________________________________
@@ -245,7 +244,7 @@ async def update_profit():
 #         coffee_maker.report()
 #         money_machine.report()
 #     elif choice == "refill":
-#        TODO Durch coffe_maker.refill ersetzen
+#         Durch coffe_maker.refill ersetzen
 #         refill_item = input("Which ingredient would you like to refill? (water, milk, coffee): ")
 #         refill_amount = int(input("How much would you like to refill? (ml/g): "))
 #         coffee_maker.resources[refill_item] += refill_amount
