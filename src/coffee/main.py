@@ -16,7 +16,7 @@ from fastapi.templating import Jinja2Templates
 from jinja2 import Template
 import psycopg2
 import psycopg2.extras
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, BaseSettings
 from coffee.coffee_maker import CoffeeMaker
 from coffee.money_machine import MoneyMachine
 
@@ -55,40 +55,35 @@ class MenuItem():
         Ingredients.COFFEE: IngredientAmount
     }
 
-
-# 23 06 27 - moved to DB=postgreSQL
-# menu = [
-#     {"name":"latte", "water": 200, "milk": 150, "coffee": 24, "price": 2.5},
-#     {"name":"espresso", "water": 50, "milk": 0, "coffee": 18, "price": 1.5},
-#     {"name":"americano", "water": 125, "milk": 0, "coffee": 36, "price": 2.25},
-#     {"name":"cappuccino", "water": 75, "milk": 100, "coffee": 24, "price": 3.75},
-#     ]
-
 # Vorübergehend credentials für DB
-hostname = 'pgdb'
-database = 'coffee_app'
-username = 'postgres'
-passwd = 'asdf'
-port_id = '5432'
+class Config(BaseSettings):
+    class Config:
+        env_prefix = 'coffee_app_'
+    hostname: str
+    database: str = 'coffee_app'
+    username:str
+    passwd: str
+    port_id: int = 5432
 
+CONFIG = Config()
 
-# Initialize DB -> # TODO default values?
-conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
-cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-cur.execute("CREATE DATABASE [IF NOT EXISTS] coffee_app;")
-cur.execute("""
-        CREATE TABLE [IF NOT EXISTS] coffee_menu(
-        id SERIAL PRIMARY KEY,
-        name text NOT NULL,
-        water numeric,
-        milk numeric,
-        coffee numeric,
-        price numeric NOT NULL
-        );
-        """)
-conn.commit()
-cur.close()
-conn.close()
+# # Initialize DB -> # TODO default values?
+# conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+# cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+# cur.execute("CREATE DATABASE [IF NOT EXISTS] coffee_app;")
+# cur.execute("""
+#         CREATE TABLE [IF NOT EXISTS] coffee_menu(
+#         id SERIAL PRIMARY KEY,
+#         name text NOT NULL,
+#         water numeric,
+#         milk numeric,
+#         coffee numeric,
+#         price numeric NOT NULL
+#         );
+#         """)
+# conn.commit()
+# cur.close()
+# conn.close()
 
 
 # FastAPI:
@@ -102,7 +97,7 @@ templates = Jinja2Templates(directory=str(BASE_PATH / "templates"))
 
 @app.get("/")
 async def read_root(request: Request):
-    conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+    conn = psycopg2.connect(host = CONFIG.hostname, dbname = CONFIG.database, user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
     conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM coffee_menu")
@@ -138,7 +133,7 @@ async def refill_resources(data: dict):
 async def brew_product(order: str):
     """Takes order from user and brews product if resources sufficient."""
 
-    conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+    conn = psycopg2.connect(host = CONFIG.hostname, dbname = CONFIG.database, user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
     conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM coffee_menu")
@@ -169,7 +164,7 @@ async def brew_product(order: str):
 @app.put("/menu/")
 async def add_recipe(data: dict):
     """Takes user input and edits an existing or creates a new recipe."""
-    conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+    conn = psycopg2.connect(host = CONFIG.hostname, dbname = CONFIG.database, user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
     conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM coffee_menu")
@@ -204,7 +199,7 @@ async def add_recipe(data: dict):
 @app.delete("/menu/{product}")
 async def delete_recipe(product: str):
     """User deletes a recipe by a button."""
-    conn = psycopg2.connect(host = hostname, dbname = database, user = username, password = passwd, port = port_id)
+    conn = psycopg2.connect(host = CONFIG.hostname, dbname = CONFIG.database, user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
     conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM coffee_menu")

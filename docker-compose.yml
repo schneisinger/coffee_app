@@ -4,7 +4,7 @@ services:
    restart: always
    hostname: pgdb  
    environment:
-     POSTGRES_PASSWORD: asdf
+     POSTGRES_PASSWORD: asdf  
    networks: 
      - coffee_net
    ports: 
@@ -22,6 +22,10 @@ services:
       timeout: 10s
       retries: 3
       start_period: 15s
+    environment: 
+      COFFEE_APP_HOSTNAME: pgdb
+      COFFEE_APP_USERNAME: postgres
+      COFFEE_APP_PASSWD: asdf
     networks:          
       - coffee_net
 

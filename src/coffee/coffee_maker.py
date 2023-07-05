@@ -48,7 +48,7 @@ class CoffeeMaker:
     #         print(f"Sorry there is not enough {item}.")
     #         can_make = False
     # return can_make
-    
+
     # def make_coffee(self, order):
     #     """Deducts the required ingredients from the resources."""
     #     for item in order.ingredients:
@@ -59,4 +59,3 @@ class CoffeeMaker:
     def refill(self, item, amount):
         """Takes item & amount as user input and adds to resources."""
         self.resources[item] += amount
-        
