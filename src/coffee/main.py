@@ -132,7 +132,6 @@ async def refill_resources(data: dict):
 @app.put("/coffee_maker/{order}")
 async def brew_product(order: str):
     """Takes order from user and brews product if resources sufficient."""
-
     conn = psycopg2.connect(host = CONFIG.hostname, dbname = CONFIG.database, user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
     conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
