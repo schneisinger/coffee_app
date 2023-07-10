@@ -43,7 +43,7 @@ def test_refill_resources():
 
 
 def test_brew_product():
-    response = client.put("/coffee_maker/{order}")
+    response = client.put("/coffee_maker/brew_espresso/")
     assert response.status_code == 200
 
 
@@ -53,5 +53,5 @@ def test_add_recipe():
 
 
 def test_delete_recipe():
-    response = client.delete("/menu/{product}")
+    response = client.delete("/menu/delete_espresso/")
     assert response.status_code == 200
