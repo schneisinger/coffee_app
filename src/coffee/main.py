@@ -5,7 +5,6 @@
 # pylint: disable=line-too-long
 
 """Doc string for modules"""
-# import os
 import re
 from enum import Enum
 import asyncio
@@ -55,7 +54,7 @@ class MenuItem():
         Ingredients.COFFEE: IngredientAmount
     }
 
-# Vorübergehend credentials für DB
+# credentials for DB
 class Config(BaseSettings):
     class Config:
         env_prefix = 'coffee_app_'
@@ -65,52 +64,70 @@ class Config(BaseSettings):
     passwd: str
     port_id: int = 5432
 
+COFFEE_APP_DB = 'coffee_app'
+
 CONFIG = Config()
-print(CONFIG)
 
 # Initialize DB
-conn = psycopg2.connect(host = CONFIG.hostname, user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
-cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-conn.autocommit = True
+def initialize_db():
+    conn = psycopg2.connect(host = CONFIG.hostname, user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    conn.autocommit = True
 
-# TODO if not exists  \ld
-cur.execute("CREATE DATABASE coffee_app;")
+    # cur.execute("DROP DATABASE IF EXISTS coffee_app;")    # Test wg. tox
 
-cur.close()
-conn.close()
-
-conn = psycopg2.connect(host = CONFIG.hostname, dbname = 'coffee_app', user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
-cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-conn.autocommit = True
-
-cur.execute("""
-        CREATE TABLE IF NOT EXISTS coffee_menu(
-        id SERIAL PRIMARY KEY,
-        name text NOT NULL,
-        water numeric,
-        milk numeric,
-        coffee numeric,
-        price numeric NOT NULL
-        );
-        """)
-
-cur.execute("""SELECT COUNT (*)
-            FROM coffee_menu;""")
-
-if cur.fetchall() == 0:
     cur.execute("""
-            INSERT INTO coffee_menu(name,water,milk,coffee,price)
-            VALUES('Espresso',50,0,18,1.5)
-                ('Latte',200,150,24,2.5)
-                ('Americano',125,0,36,2.25)
-                ('Cappuccino',75,100,36,3.75);
+            SELECT * FROM pg_catalog.pg_database
+            ORDER BY 1;""")
+
+    dbs = cur.fetchall()
+    db_exists = False
+
+    for elem in dbs:
+        if elem[1] == "coffee_app":
+            db_exists = True
+
+    if not db_exists:
+        cur.execute("CREATE DATABASE coffee_app;")
+
+    cur.close()
+    conn.close()
+
+    conn = psycopg2.connect(host = CONFIG.hostname, dbname = COFFEE_APP_DB, user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    conn.autocommit = True
+
+    cur.execute("""
+            CREATE TABLE IF NOT EXISTS coffee_menu(
+            id SERIAL PRIMARY KEY,
+            name text NOT NULL,
+            water numeric,
+            milk numeric,
+            coffee numeric,
+            price numeric NOT NULL
+            );
             """)
 
-cur.close()
-conn.close()
+    cur.execute("""SELECT COUNT (*)
+                FROM coffee_menu;""")
+
+    count = cur.fetchall()
+
+    if count[0][0] == 0:
+        cur.execute("""
+                INSERT INTO coffee_menu(name,water,milk,coffee,price)
+                VALUES('espresso',50,0,18,1.5),
+                    ('latte',200,150,24,2.5),
+                    ('americano',125,0,36,2.25),
+                    ('cappuccino',75,100,36,3.75);
+                """)
+
+    cur.close()
+    conn.close()
 
 
 # FastAPI:
+initialize_db()
 app = FastAPI()
 
 app.mount("/static", StaticFiles(packages=[('coffee', 'static')]), name="static")
@@ -121,7 +138,7 @@ templates = Jinja2Templates(directory=str(BASE_PATH / "templates"))
 
 @app.get("/")
 async def read_root(request: Request):
-    conn = psycopg2.connect(host = CONFIG.hostname, dbname = 'coffee_app', user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
+    conn = psycopg2.connect(host = CONFIG.hostname, dbname = COFFEE_APP_DB, user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
     conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM coffee_menu")
@@ -156,7 +173,7 @@ async def refill_resources(data: dict):
 @app.put("/coffee_maker/{order}")
 async def brew_product(order: str):
     """Takes order from user and brews product if resources sufficient."""
-    conn = psycopg2.connect(host = CONFIG.hostname, dbname = 'coffee_app', user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
+    conn = psycopg2.connect(host = CONFIG.hostname, dbname = COFFEE_APP_DB, user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
     conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM coffee_menu")
@@ -172,10 +189,9 @@ async def brew_product(order: str):
     if coffee_maker.is_resource_sufficient(choice, menu):
         coffee_maker.make_coffee(choice, menu)
         money_machine.profit += price
-        #print(f"Success: {choice}")
     else:
         raise HTTPException(
-            status_code=444,
+            status_code=418,
             detail="Resources insufficient",
             headers={"X-Error": "Resources insufficient"},
         )
@@ -187,7 +203,7 @@ async def brew_product(order: str):
 @app.put("/menu/")
 async def add_recipe(data: dict):
     """Takes user input and edits an existing or creates a new recipe."""
-    conn = psycopg2.connect(host = CONFIG.hostname, dbname = 'coffee_app', user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
+    conn = psycopg2.connect(host = CONFIG.hostname, dbname = COFFEE_APP_DB, user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
     conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM coffee_menu")
@@ -222,7 +238,7 @@ async def add_recipe(data: dict):
 @app.delete("/menu/{product}")
 async def delete_recipe(product: str):
     """User deletes a recipe by a button."""
-    conn = psycopg2.connect(host = CONFIG.hostname, dbname = 'coffee_app', user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
+    conn = psycopg2.connect(host = CONFIG.hostname, dbname = COFFEE_APP_DB, user = CONFIG.username, password = CONFIG.passwd, port = CONFIG.port_id)
     conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute("SELECT * FROM coffee_menu")
@@ -240,33 +256,3 @@ async def delete_recipe(product: str):
     cur.close()
     conn.close()
     return menu
-
-
-# conn.close()
-
-# ___________________________________________________________
-
-### 23 05 16 - old code below
-
-# # Initialize
-# MACHINE_RUNNING = True
-# os.system('cls')
-
-# while MACHINE_RUNNING:
-#     options = menu.get_items()
-#     choice = input(f"What would you like? {options}: ").lower()
-#     if choice == "off":
-#         MACHINE_RUNNING = False
-#         print("Ok, bye.")
-#     elif choice == "report":
-#         coffee_maker.report()
-#         money_machine.report()
-#     elif choice == "refill":
-#         Durch coffe_maker.refill ersetzen
-#         refill_item = input("Which ingredient would you like to refill? (water, milk, coffee): ")
-#         refill_amount = int(input("How much would you like to refill? (ml/g): "))
-#         coffee_maker.resources[refill_item] += refill_amount
-#     else:
-#         drink = menu.find_drink(choice)
-#         if coffee_maker.is_resource_sufficient(drink) and money_machine.make_payment(drink.cost):
-#             coffee_maker.make_coffee(drink)

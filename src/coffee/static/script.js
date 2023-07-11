@@ -3,6 +3,7 @@
 // console.log($("#terminal"));
 // temp1.text("testetxt");
 
+
 delete_id = ""
 
 function getID(clicked_id) {
@@ -13,10 +14,12 @@ function getID(clicked_id) {
 
 brew_id = ""
 
+
 function getBREW(clicked_id) {
     brew_id = document.getElementById(clicked_id)
     return brew_id
 }
+
 
 $(function(){
 
@@ -29,7 +32,6 @@ $(function(){
         $.ajax({
             url: "/coffee_maker/",
         }).done(function(report_data) {
-            // console.log(report_data)
             document.getElementById("terminal_text").innerHTML = 'Current resources available: ' + '<br>' + '<br>' + 'Water: ' + report_data.water + ' ml' + '<br>' + 'Milk: ' + report_data.milk + ' ml' + '<br>' + 'Coffee: ' + report_data.coffee + ' g';
         });
     });
@@ -85,10 +87,6 @@ $(function(){
         var price_edit = document.getElementById("edit_price").value;
         var myJSONObject = {"name": name_edit, "water": water_edit, "milk": milk_edit, "coffee": coffee_edit, "price": price_edit};
 
-        // if (name_edit == null || name_edit == "") {
-        //     alert("Please enter a product name and try again. ");
-        //     return false;
-        //     }
 
     $.ajax({
         type: 'PUT',
@@ -98,29 +96,12 @@ $(function(){
         data: JSON.stringify(myJSONObject),
         success: function(){
             console.log("Edit successfull. ")
-            document.getElementById("terminal_text").innerHTML = 'Edited: ' + '<br>' + '<br>' + name_edit + '<br>' + '(maybe) ready to brew..';
-            //TODO raus zum Testen
-            // document.getElementById("edit_name").value = " ";
-            // default_coffee = document.getElementById("edit_coffee");
-            // default_water = document.getElementById("edit_water");
-            // default_milk = document.getElementById("edit_milk");
-            // default_price = document.getElementById("edit_price");
-            // default_coffee.value = default_coffee.defaultValue;
-            // default_water.value = default_water.defaultValue;
-            // default_milk.value = default_milk.defaultValue;
-            // default_price.value = default_price.defaultValue;
-
         },
         error: function() {
             alert('Edit failed')
         },
         });
-
         location.reload();
-        // var table = document.getElementById("menu_items");
-        // table.reload()
-        // $("#menu_items").load("index.html");
-
     });
 
 
@@ -135,8 +116,13 @@ $(function(){
             contentType: 'application/json; charset=utf-8',
             data: prod_brew,
             success: function(){
-                console.log("Brew successfull. ")
-                document.getElementById("terminal_text").innerHTML = 'Brewed: ' + '<br>' + '<br>' + prod_brew + '<br>' + '<br>' + '☕️ enjoy.'; // TODO prod_brew noch regexen
+                const regex = new RegExp("(?<=brew_).*");
+                var product = regex.exec(prod_brew);
+                // function capitalize(s){
+                //         return s[0].toUpperCase() + s.slice(1);
+                //     }
+                // product = capitalize(re_product);
+                document.getElementById("terminal_text").innerHTML = 'Please take your ' + '<br>' + '<br>' + product + ' ☕️ ' + '<br>' + '<br>' + 'Enjoy.';
             },
             error: function() {
                 alert('Brew failed - please check & refill resources.')
@@ -147,7 +133,6 @@ $(function(){
     // Delete recipes
     $(".delete_button").on("click", function(){
         prod_delete = delete_id.id;
-
         $.ajax({
             type: 'DELETE',
             url: '/menu/' + prod_delete,
@@ -155,21 +140,18 @@ $(function(){
             contentType: 'application/json; charset=utf-8',
             data: prod_delete,
             success: function(){
-                console.log("Delete successfull. ")
-                document.getElementById("terminal_text").innerHTML = 'Deleted: ' + '<br>' + '<br>' + prod_delete; // TODO prod_delete noch regexen
+                console.log("Delete successful.")
             },
             error: function() {
                 alert('Delete failed')
             },
             });
-
         location.reload();
         });
 
 
     // Invert variable ON for RUNNING
     var ON = true
-
     $("#on_off").on("click", function(){
         ON = !ON
         var turn_off = document.getElementsByClassName('ON');
