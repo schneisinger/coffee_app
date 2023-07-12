@@ -1,0 +1,6 @@
+pipeline:
+    build: 
+      image: python:3.10
+      commands: 
+        - echo Hello World! 
+
