@@ -100,11 +100,11 @@ def initialize_db():
     cur.execute("""
             CREATE TABLE IF NOT EXISTS coffee_menu(
             id SERIAL PRIMARY KEY,
-            name text NOT NULL,
-            water numeric,
-            milk numeric,
-            coffee numeric,
-            price numeric NOT NULL
+            name TEXT NOT NULL,
+            water NUMERIC,
+            milk NUMERIC,
+            coffee NUMERIC,
+            price NUMERIC NOT NULL
             );
             """)
 
