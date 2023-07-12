@@ -10,7 +10,7 @@ pipeline:
       - pdm install
       - pdm run pytest -v --cov=coffee --cov-report=term --cov-report=html testing
     environment: 
-      COFFEE_APP_HOSTNAME: localhost
+      COFFEE_APP_HOSTNAME: pgdb 
       COFFEE_APP_USERNAME: postgres
       COFFEE_APP_PASSWD: asdf
 
@@ -23,4 +23,3 @@ services:
       COFFEE_APP_HOSTNAME: pgdb
       COFFEE_APP_USERNAME: postgres
       COFFEE_APP_PASSWD: asdf
-
