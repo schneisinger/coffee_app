@@ -8,7 +8,7 @@ pipeline:
       - env
       - pip install pdm==2.6.1
       - pdm install
-      - pytest -v --cov=coffee --cov-report=term --cov-report=html testing
+      - pdm run pytest -v --cov=coffee --cov-report=term --cov-report=html testing
     environment: 
       COFFEE_APP_HOSTNAME: localhost
       COFFEE_APP_USERNAME: postgres
