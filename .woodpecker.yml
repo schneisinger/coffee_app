@@ -2,12 +2,9 @@ pipeline:
   build: 
     image: python:3.10
     commands:
-      - pwd 
-      - ls -la 
-      - id 
-      - env
       - pip install pdm==2.6.1
       - pdm install
+     # - while not ping pdgb:5432 sleep 3
       - pdm run pytest -v --cov=coffee --cov-report=term --cov-report=html testing
     environment: 
       COFFEE_APP_HOSTNAME: pgdb 
