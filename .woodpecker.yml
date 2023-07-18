@@ -20,3 +20,4 @@ services:
       COFFEE_APP_HOSTNAME: pgdb
       COFFEE_APP_USERNAME: postgres
       COFFEE_APP_PASSWD: asdf
+
